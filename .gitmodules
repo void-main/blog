@@ -1,3 +1,12 @@
 [submodule "themes/icarus"]
 	path = themes/icarus
 	url = https://github.com/void-main/hexo-theme-icarus.git
+[submodule "themes/maupassant"]
+	path = themes/maupassant
+	url = git@github.com:tufu9441/maupassant-hexo.git
+[submodule "themes/tranquilpeak"]
+	path = themes/tranquilpeak
+	url = git@github.com:LouisBarranqueiro/hexo-theme-tranquilpeak.git
+[submodule "themes/material-flow"]
+	path = themes/material-flow
+	url = git@github.com:stkevintan/hexo-theme-material-flow.git

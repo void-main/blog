@@ -4,7 +4,7 @@
 
 # Site
 title: voidmain's blog
-subtitle:  42
+subtitle:  to the moon
 description: Blog of a passionate coding bitch.
 author: VoidMain
 language: zh
@@ -78,7 +78,7 @@ disqus:
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+theme: icarus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
