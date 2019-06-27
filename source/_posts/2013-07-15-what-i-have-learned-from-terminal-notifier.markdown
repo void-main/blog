@@ -1,5 +1,4 @@
 ---
-layout: post
 comments: true
 title:  "What I have learned from terminal-notifier"
 date:   2013-07-15 14:34:57
