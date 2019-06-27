@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>动画 on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/%E5%8A%A8%E7%94%BB/</link>
+    <description>Recent content in 动画 on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 09 Jun 2016 12:14:57 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/%E5%8A%A8%E7%94%BB/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>实战stroke动画</title>
+      <link>http://blog.voidmain.guru/posts/2016-06-09-stroke-animation-in-action/</link>
+      <pubDate>Thu, 09 Jun 2016 12:14:57 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2016-06-09-stroke-animation-in-action/</guid>
+      <description>iOS支持对许多属性进行动画操作，比如center，rotation等等。其中有两个属性常常被人忽略，但又能做出很有趣的效果，那就是strokeStart与strokeEnd。最近在做一个小东西的时候想要用动画在搜索图标与返回图表之间切换，效果如下：
+具体是如何实现的，且容我慢慢说来。
+设计动画 在具体做之前首先需要设计如何让这两个图标可以较为自然的切换。首先我们来分析下返回图标，
+如下图：
+返回图标非常简单，就是三根线，分别标记为1-3。然后分析下放大镜图标，如下图：
+如果我们按照放大镜手柄做一根延长线，恰好也可以把放大镜可以分为三部分，上下半圆（1，2）和放大镜手柄（3）。
+所以我就让两个半圆“变形”成两个返回按钮，同时为了增加不同类型的动画，我决定让放大镜的手柄旋转一下，具体效果如下图：
+放大镜的两个半圆在缩小的同时，返回图标的两条线在生长，同时放大镜的手柄向上摆动，看起来就像放大镜变形成了返回键。
+让我们一起来看一个慢速版本，这样可以比较直观的理解动画过程。
+定义状态 根据上面的分析可以看出这个动画有两个状态，分别是放大镜状态和返回键状态。可以用一个枚举来表示两个状态：
+enum AnimationState { case Magnifier case Back func nextState() -&amp;gt; AnimationState { return self == .Magnifier ? .Back : .Magnifier } }  这里我增加了一个nextState方法，主要用来计算下一个状态是什么，逻辑也非常简单，如果是放大镜，下一个状态就是返回；如果是返回，下一个状态就是放大镜。
+创建形状图层 那我们怎么表示圆形和直线呢？答案就是用UIBezierPath。UIBezierPath定义了许多形状绘制的方法，包括圆弧和直线。创建形状的代码非常简单，但是在创建之前我们需要一个“容器”来展示定义好的曲线，这就需要用到CAShapeLayer：
+func setupCircleLayer(layer: CAShapeLayer, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, strokeStart: CGFloat = 0, strokeEnd: CGFloat = 1, lineWidth: CGFloat = magnifierLineWidth, strokeColor: CGColor = magnifierColor) { layer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>protocol on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/protocol/</link>
+    <description>Recent content in protocol on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 03 Oct 2017 21:31:37 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/protocol/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTTP状态码——405 vs 501</title>
+      <link>http://blog.voidmain.guru/posts/2017-10-03-http-status-405vs501/</link>
+      <pubDate>Tue, 03 Oct 2017 21:31:37 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2017-10-03-http-status-405vs501/</guid>
+      <description>HTTP状态码中有一些比较相似的状态码，容易让人产生混淆。其中比较冷门的一组是405(Method Not Allowed)与501(Not Implemented)。一个请求如果请求的方法不支持，不也算是没有实现么？这两者有何区别？我们就来仔细分析一下。
+状态码的定义 说起状态码定义，最具权威性的就是rfc-2616 文档了：
+6.5.5. 405 Method Not Allowed The 405 (Method Not Allowed) status code indicates that the method received in the request-line is known by the origin server but not supported by the target resource. The origin server MUST generate an Allow header field in a 405 response containing a list of the target resource&amp;rsquo;s currently supported methods.
+405状态码表示请求中的方法（回忆一下，HTTP请求行由3部分组成，请求方法、请求资源以及请求版本号，例如：GET /some/amazing/resource HTTP/1.1）目标服务器认识，但是对于这次请求的资源，服务器无法用请求的方法响应。同时协议要求，响应头重必须包含Allow头，返回支持对应资源的请求方法。
+6.6.2. 501 Not Implemented The 501 (Not Implemented) status code indicates that the server does not support the functionality required to fulfill the request.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>NSImage在读取高DPI图像时的bug及解决方案 - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="NSImage在读取高DPI图像时的bug及解决方案" />
+<meta property="og:description" content="这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？
+比如下面这个图：
+它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。
+NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url]; NSLog(@&quot;before: %@&quot;, NSStringFromSize(srcImage.size));  这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：
+其实要解决这个问题并不是特别困难。尽管NSImage在计算尺寸的时候是按72dpi来计算的，但是NSImage的内部表示NSBitmapImageRep还是有字段保留着图像的实际尺寸，分别是pixelsWide跟pixelsHigh。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：
+- (NSBitmapImageRep *)bitmapImageRepresentation { // NSImage可能包含很多representation，需要迭代一下 NSArray * imageReps = [self representations]; float width = 0; float height = 0; for (NSImageRep * imageRep in imageReps) { // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率 if ([imageRep pixelsWide] &gt; width) width = [imageRep pixelsWide]; if ([imageRep pixelsHigh] &gt; height) height = [imageRep pixelsHigh]; } if(width &lt; 1 || height &lt; 1) return nil; // 重新绘制 NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL pixelsWide: width pixelsHigh: height bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar: NO colorSpaceName: NSDeviceRGBColorSpace bytesPerRow: 0 bitsPerPixel: 0]; NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep]; [NSGraphicsContext saveGraphicsState]; [NSGraphicsContext setCurrentContext: ctx]; // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height)) [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/" />
+<meta property="article:published_time" content="2014-07-13T20:11:40+08:00" />
+<meta property="article:modified_time" content="2014-07-13T20:11:40+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NSImage在读取高DPI图像时的bug及解决方案"/>
+<meta name="twitter:description" content="这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？
+比如下面这个图：
+它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。
+NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url]; NSLog(@&quot;before: %@&quot;, NSStringFromSize(srcImage.size));  这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：
+其实要解决这个问题并不是特别困难。尽管NSImage在计算尺寸的时候是按72dpi来计算的，但是NSImage的内部表示NSBitmapImageRep还是有字段保留着图像的实际尺寸，分别是pixelsWide跟pixelsHigh。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：
+- (NSBitmapImageRep *)bitmapImageRepresentation { // NSImage可能包含很多representation，需要迭代一下 NSArray * imageReps = [self representations]; float width = 0; float height = 0; for (NSImageRep * imageRep in imageReps) { // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率 if ([imageRep pixelsWide] &gt; width) width = [imageRep pixelsWide]; if ([imageRep pixelsHigh] &gt; height) height = [imageRep pixelsHigh]; } if(width &lt; 1 || height &lt; 1) return nil; // 重新绘制 NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL pixelsWide: width pixelsHigh: height bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar: NO colorSpaceName: NSDeviceRGBColorSpace bytesPerRow: 0 bitsPerPixel: 0]; NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep]; [NSGraphicsContext saveGraphicsState]; [NSGraphicsContext setCurrentContext: ctx]; // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height)) [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">NSImage在读取高DPI图像时的bug及解决方案</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-13T20:11:40">2014-07-13</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a>, <a class="meta__link" href="/categories/nsimage" rel="category">NSImage</a>, <a class="meta__link" href="/categories/image" rel="category">image</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？</p>
+
+<p>比如下面这个图：</p>
+
+<p><img src="/assets/high-dpi-image-size.png" alt="Image Size with High DPI" /></p>
+
+<p>它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。</p>
+
+<pre><code class="language-objc">NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url];
+NSLog(@&quot;before: %@&quot;, NSStringFromSize(srcImage.size));
+</code></pre>
+
+<p>这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：</p>
+
+<p><img src="/assets/try-to-change-dpi-with-photoshop.png" alt="Change DPI" /></p>
+
+<p>其实要解决这个问题并不是特别困难。尽管<code>NSImage</code>在计算尺寸的时候是按72dpi来计算的，但是<code>NSImage</code>的内部表示<code>NSBitmapImageRep</code>还是有字段保留着图像的实际尺寸，分别是<code>pixelsWide</code>跟<code>pixelsHigh</code>。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：</p>
+
+<pre><code class="language-objc">- (NSBitmapImageRep *)bitmapImageRepresentation {
+    // NSImage可能包含很多representation，需要迭代一下
+    NSArray * imageReps = [self representations];
+    float width = 0;
+    float height = 0;
+
+    for (NSImageRep * imageRep in imageReps) {
+        // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率
+        if ([imageRep pixelsWide] &gt; width) width = [imageRep pixelsWide];
+        if ([imageRep pixelsHigh] &gt; height) height = [imageRep pixelsHigh];
+    }
+    
+    if(width &lt; 1 || height &lt; 1)
+        return nil;
+    
+    // 重新绘制
+    NSBitmapImageRep *rep = [[NSBitmapImageRep alloc]
+                             initWithBitmapDataPlanes: NULL
+                             pixelsWide: width
+                             pixelsHigh: height
+                             bitsPerSample: 8
+                             samplesPerPixel: 4
+                             hasAlpha: YES
+                             isPlanar: NO
+                             colorSpaceName: NSDeviceRGBColorSpace
+                             bytesPerRow: 0
+                             bitsPerPixel: 0];
+    
+    NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep];
+    [NSGraphicsContext saveGraphicsState];
+    [NSGraphicsContext setCurrentContext: ctx];
+    // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height))
+    [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.0];
+    [ctx flushGraphics];
+    [NSGraphicsContext restoreGraphicsState];
+    
+    return rep;
+}
+</code></pre>
+
+<p>这个核心文件我已经托管到<a href="https://github.com/void-main/NSImage-BitmapRep">github</a>了。</p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2014-07-13-my-daily-timetable/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">我的工作时间表</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">跟郭总学开发（1）——Mac应用使用OpenCV的问题与解决方案</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

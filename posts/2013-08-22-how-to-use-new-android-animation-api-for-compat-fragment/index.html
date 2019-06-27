@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>How to Use New Android Animation API for Compat Fragment - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="How to Use New Android Animation API for Compat Fragment" />
+<meta property="og:description" content="Why Since honeycomb (API level 11), Google has introduced a new set of APIs to help developers build better app, including Fragment and property animation.
+These new APIs are great, but they are not quite compatible with older devices, thus Google provided a support library to solve this problem.
+While building my app, I&rsquo;m trying to use the compat fragment to support as many devices as possible, meanwhile, I want to take advantage of new set of animation apis to create animation easier." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/" />
+<meta property="article:published_time" content="2013-08-22T19:55:32+00:00" />
+<meta property="article:modified_time" content="2013-08-22T19:55:32+00:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to Use New Android Animation API for Compat Fragment"/>
+<meta name="twitter:description" content="Why Since honeycomb (API level 11), Google has introduced a new set of APIs to help developers build better app, including Fragment and property animation.
+These new APIs are great, but they are not quite compatible with older devices, thus Google provided a support library to solve this problem.
+While building my app, I&rsquo;m trying to use the compat fragment to support as many devices as possible, meanwhile, I want to take advantage of new set of animation apis to create animation easier."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">How to Use New Android Animation API for Compat Fragment</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2013-08-22T19:55:32">2013-08-22</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/android" rel="category">android</a>, <a class="meta__link" href="/categories/animator" rel="category">animator</a>, <a class="meta__link" href="/categories/fragment" rel="category">fragment</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#why">Why</a></li>
+<li><a href="#starting-with-a-simple-fragment">Starting with a simple fragment</a></li>
+<li><a href="#importing-nineoldandroids">Importing NineOldAndroids</a></li>
+<li><a href="#two-parts-of-the-animation">Two parts of the animation</a></li>
+<li><a href="#show-me-the-code">Show me the code</a></li>
+<li><a href="#conclusion">Conclusion</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+<h2 id="why">Why</h2>
+
+<p>Since honeycomb (API level 11), Google has introduced a new set of APIs to help developers build better app, including <a href="http://developer.android.com/guide/components/fragments.html">Fragment</a> and <a href="http://developer.android.com/guide/topics/graphics/prop-animation.html">property animation</a>.</p>
+
+<p>These new APIs are great, but they are not quite compatible with older devices, thus Google provided a <a href="http://developer.android.com/tools/support-library/index.html">support library</a> to solve this problem.</p>
+
+<p>While building my app, I&rsquo;m trying to use the <a href="http://developer.android.com/reference/android/support/v4/app/Fragment.html">compat fragment</a> to support as many devices as possible, meanwhile, I want to take advantage of new set of animation apis to create animation easier.</p>
+
+<p>The <a href="http://developer.android.com/reference/android/support/v4/app/FragmentTransaction.html">FragmentTransaction</a> class has a simple API named <code>setCustomAnimations()</code> to set the animation while switching fragments. But, sadly, when I tried to use the animator xml file (I mean, using property animation elements like <code>&lt;objectAnimator&gt;</code> in the animation xml) on Gingerbread emulator (with API level less than 11), the app simply crashed complaining it does not understand the <code>objectAnimator</code> sh*t, which means you have to give up on the new animation API with compat fragment.</p>
+
+<p>No way!</p>
+
+<p>And finally, I managed to find a way to get this work. Here&rsquo;s what I&rsquo;ve tried.</p>
+
+<p>If you are urged to see a demo, please check the <a href="https://github.com/void-main/FragmentCompatAnimator">readme of this sample</a> on github.</p>
+
+<h2 id="starting-with-a-simple-fragment">Starting with a simple fragment</h2>
+
+<p>Since this is a experimental project, I don&rsquo;t want to build some complex fragments, that&rsquo;s why I decided to use <a href="https://github.com/JakeWharton/ActionBarSherlock/blob/master/actionbarsherlock-samples/styled/src/com/actionbarsherlock/sample/styled/RoundedColourFragment.java">RoundedColourFragment</a> from <a href="http://actionbarsherlock.com/">ActionBarSherlock</a> project.</p>
+
+<p>The fragment is quite simple, it will generate a colored rounded rectangle as the view of the fragment, whose color can be specified as a argument of the constructor.</p>
+
+<h2 id="importing-nineoldandroids">Importing NineOldAndroids</h2>
+
+<p>In order to use the new animation api on older versions of android, I found of the <a href="http://nineoldandroids.com/">NineOldAndroids</a> project.</p>
+
+<p>Even though I didn&rsquo;t quite get its name (sad), the project is really awesome. It somehow managed to give the developer a way to use the new animation apis even on Android 1.0, amazing. It&rsquo;s fun, but the only way is you cannot put them in XML files, still need to work out how to use the animation.</p>
+
+<h2 id="two-parts-of-the-animation">Two parts of the animation</h2>
+
+<p>Not being able to use the animation in XML files, I have to write some code to make this happen. Here&rsquo;s a methods I defined to trigger the new animation.</p>
+
+<pre><code>import com.nineoldandroids.animation.Animator;
+import com.nineoldandroids.animation.AnimatorListenerAdapter;
+import com.nineoldandroids.animation.ObjectAnimator;
+
+……
+
+private void flipit() {
+	ObjectAnimator visToInvis = ObjectAnimator.ofFloat(frontFrag.getView(), 
+	    &quot;rotationY&quot;, 0f, 90f);
+	visToInvis.setDuration(300);
+	visToInvis.setInterpolator(accelerator);
+	visToInvis.addListener(new AnimatorListenerAdapter() {
+    	@Override
+    	public void onAnimationEnd(Animator anim) {
+    		FragmentTransaction ft = getSupportFragmentManager()
+				.beginTransaction();
+			ft.replace(R.id.root, backFrag);
+			ft.commit();
+    	}
+    });
+    visToInvis.start();
+}
+</code></pre>
+
+<p>This is the first part of the animation, the old fragment fliped to disappear by changing the <code>rotationY</code> property from 0 to 90 degree. Once this animation is finished, I need to replace the old fragment with the new one by calling <code>FragmentTransaction#replace</code> method.</p>
+
+<p>But we cannot simply let the new fragment appear and be there, it will be awkward. So, I&rsquo;ve designed a callback that will be triggered once the new fragment&rsquo;s view is ready, the code is listed below.</p>
+
+<pre><code>@Override
+public void onViewCreated(View view, Bundle savedInstanceState) {
+	super.onViewCreated(view, savedInstanceState);
+	
+	if (mListener != null) {
+		mListener.onViewCreated();
+	}
+}
+</code></pre>
+
+<p>Once the view is created, I&rsquo;ll kick off the second part of the animation, which changes the <code>rotationY</code> property from -90 degree to 0. Here&rsquo;s the code.</p>
+
+<pre><code>@Override
+public void onViewCreated() {
+	View v = backFrag.getView();
+	final ObjectAnimator invisToVis = ObjectAnimator.ofFloat(v, &quot;rotationY&quot;,
+            -90f, 0f);
+    invisToVis.setDuration(300);
+    invisToVis.setInterpolator(decelerator);
+	
+	invisToVis.start();
+}
+</code></pre>
+
+<p>And now, the animation is working perfectly.</p>
+
+<h2 id="show-me-the-code">Show me the code</h2>
+
+<p>I&rsquo;ve created a project on github, called <a href="https://github.com/void-main/FragmentCompatAnimator">FragmentCompatAnimator</a>, make sure to check it out.</p>
+
+<h2 id="conclusion">Conclusion</h2>
+
+<p>It is always a good idea to use new APIs for better performance and use experience. But compatibilty is a tough problem. Thanks to all opensource framework contributors, it is and will be easier for us developers to take advantage of the new APIs but still be able to make it work on older devices.</p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2013-07-20-how-to-play-sc2-on-mac/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">[更新-教程]如何在Mac上玩儿国服星际2（原生，非port版）</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2014-05-18-leadership-from-a-dancing-guy/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">关于Leadership</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

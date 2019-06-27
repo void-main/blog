@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>帮他人提交Mac应用 - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="帮他人提交Mac应用" />
+<meta property="og:description" content="最近做的一个外包项目要提交到应用市场了，但是他的开发者账户是个人账户，无法添加其他成员；同时我又不能要求他修改自己的Apple ID密码，然后发给我，这太不安全了。因为无法在XCode里面添加开发者账户，所以就不能使用XCode内置的工具上传应用了。对于这种情况，只能使用Apple提供的ApplicationLoader来进行应用发布，但是如何创建一个正确签名、可发布的应用包就成了很大的问题。
+根据开发者文档来看，ApplicationLoader只接受ipa（iOS）、pkg（OSX与IAP）还有zip文件，因为我做的是Mac应用，所以就要想办法创建一个可用的pkg包。
+经过一些搜索与尝试，最终还是成功把应用包提交了，下面就把过程总结一下。
+生成app文件 具体如何archive，如何校对设置我就不详细说明了，如果有需要的话请自行google &ldquo;App Distribution Guide&rdquo;，值得一提的是，因为我们在XCode中没有证书与签名，所以在导出app的时候，只能选择最后一项（&rdquo;Export as a Mac Application&rdquo;）。
+所需证书 创建pkg需要两步签名，首先要对刚刚生成的&rdquo;.app&rdquo;签名，这里需要用到&rdquo;Mac App Distribution&rdquo;这个证书；接下来还要为生成的安装包签名，这里要用的是&rdquo;Mac Installer Distribution&rdquo;这个证书。
+生成签名请求 虽然不能直接访问开发者账户，但是要将应用提交到应用市场一定要有开发者签名，这就需要有账户的人配合了。首先你要做好准备工作，或者说写申请。这里说的申请就是在本地创建一个签名请求。打开Keychain Access工具，按照下图选择：
+因为要生成两个证书，而且根据我个人的测试，证书跟签名请求是一一对应的，所以在这一步需要创建两个签名请求文件，建议用&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;跟&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;来命名，其他的能区分的命名方式都可以。
+指导他人生成证书 接下来就要用这个签名去请求证书了，具体的过程是：
+ 访问开发者网站，登陆Member Center。 在Mac应用页面中，选择&rdquo;Certificates, Identifiers &amp; Profiles&rdquo;中的&rdquo;Certificates&rdquo;那一项。 点击右上角的&rdquo;&#43;&ldquo;按钮，创建新证书。 在&rdquo;Production&rdquo;分类中选择&rdquo;Mac App Store&rdquo;。 在下一步页面中，选择&rdquo;Mac App Distribution&rdquo;。 在下一步页面中，选择&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;文件。 点击&rdquo;Generate&rdquo;来生成证书（证书文件名默认为&rdquo;mac_app.cer&rdquo;）。 重复1-7步，在第5步选择&rdquo;Mac Installer Distribution&rdquo;，在第六步中上传&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;文件。这里第7步生成的证书的默认文件名是&rdquo;mac_installer.cer&rdquo;。  导入证书 分别双击导入&rdquo;mac_app.cer&rdquo;与&rdquo;mac_installer.cer&rdquo;，导入的时候选择“login”来导入当前用户的钥匙链中。导入之后最好通过名字过滤搜索，确认导入成功。
+应用签名 有了证书之后就可以对之前生成的&rdquo;.app&rdquo;文件签名了。命令如下：
+codesign -f -s &quot;3rd Party Mac Developer Application: XXX&quot; --entitlements “YYY.entitlements” &quot;ZZZ.app&quot;
+其中&rdquo;3rd Party Mac Developer Application: XXX&rdquo;就是证书中的那个名字，&rdquo;YYY.entitlements&rdquo;就是应用对应的entitlements的路径，&rdquo;ZZZ.app&rdquo;就是之前生成的app文件。
+安装包签名 接着使用productbuild工具来生成安装包，命令如下：" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/" />
+<meta property="article:published_time" content="2014-12-09T09:42:32+08:00" />
+<meta property="article:modified_time" content="2014-12-09T09:42:32+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="帮他人提交Mac应用"/>
+<meta name="twitter:description" content="最近做的一个外包项目要提交到应用市场了，但是他的开发者账户是个人账户，无法添加其他成员；同时我又不能要求他修改自己的Apple ID密码，然后发给我，这太不安全了。因为无法在XCode里面添加开发者账户，所以就不能使用XCode内置的工具上传应用了。对于这种情况，只能使用Apple提供的ApplicationLoader来进行应用发布，但是如何创建一个正确签名、可发布的应用包就成了很大的问题。
+根据开发者文档来看，ApplicationLoader只接受ipa（iOS）、pkg（OSX与IAP）还有zip文件，因为我做的是Mac应用，所以就要想办法创建一个可用的pkg包。
+经过一些搜索与尝试，最终还是成功把应用包提交了，下面就把过程总结一下。
+生成app文件 具体如何archive，如何校对设置我就不详细说明了，如果有需要的话请自行google &ldquo;App Distribution Guide&rdquo;，值得一提的是，因为我们在XCode中没有证书与签名，所以在导出app的时候，只能选择最后一项（&rdquo;Export as a Mac Application&rdquo;）。
+所需证书 创建pkg需要两步签名，首先要对刚刚生成的&rdquo;.app&rdquo;签名，这里需要用到&rdquo;Mac App Distribution&rdquo;这个证书；接下来还要为生成的安装包签名，这里要用的是&rdquo;Mac Installer Distribution&rdquo;这个证书。
+生成签名请求 虽然不能直接访问开发者账户，但是要将应用提交到应用市场一定要有开发者签名，这就需要有账户的人配合了。首先你要做好准备工作，或者说写申请。这里说的申请就是在本地创建一个签名请求。打开Keychain Access工具，按照下图选择：
+因为要生成两个证书，而且根据我个人的测试，证书跟签名请求是一一对应的，所以在这一步需要创建两个签名请求文件，建议用&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;跟&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;来命名，其他的能区分的命名方式都可以。
+指导他人生成证书 接下来就要用这个签名去请求证书了，具体的过程是：
+ 访问开发者网站，登陆Member Center。 在Mac应用页面中，选择&rdquo;Certificates, Identifiers &amp; Profiles&rdquo;中的&rdquo;Certificates&rdquo;那一项。 点击右上角的&rdquo;&#43;&ldquo;按钮，创建新证书。 在&rdquo;Production&rdquo;分类中选择&rdquo;Mac App Store&rdquo;。 在下一步页面中，选择&rdquo;Mac App Distribution&rdquo;。 在下一步页面中，选择&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;文件。 点击&rdquo;Generate&rdquo;来生成证书（证书文件名默认为&rdquo;mac_app.cer&rdquo;）。 重复1-7步，在第5步选择&rdquo;Mac Installer Distribution&rdquo;，在第六步中上传&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;文件。这里第7步生成的证书的默认文件名是&rdquo;mac_installer.cer&rdquo;。  导入证书 分别双击导入&rdquo;mac_app.cer&rdquo;与&rdquo;mac_installer.cer&rdquo;，导入的时候选择“login”来导入当前用户的钥匙链中。导入之后最好通过名字过滤搜索，确认导入成功。
+应用签名 有了证书之后就可以对之前生成的&rdquo;.app&rdquo;文件签名了。命令如下：
+codesign -f -s &quot;3rd Party Mac Developer Application: XXX&quot; --entitlements “YYY.entitlements” &quot;ZZZ.app&quot;
+其中&rdquo;3rd Party Mac Developer Application: XXX&rdquo;就是证书中的那个名字，&rdquo;YYY.entitlements&rdquo;就是应用对应的entitlements的路径，&rdquo;ZZZ.app&rdquo;就是之前生成的app文件。
+安装包签名 接着使用productbuild工具来生成安装包，命令如下："/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">帮他人提交Mac应用</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-12-09T09:42:32">2014-12-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/appstore" rel="category">AppStore</a>, <a class="meta__link" href="/categories/cocoa" rel="category">Cocoa</a>, <a class="meta__link" href="/categories/mac" rel="category">Mac</a>, <a class="meta__link" href="/categories/developer" rel="category">Developer</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#生成app文件">生成app文件</a></li>
+<li><a href="#所需证书">所需证书</a></li>
+<li><a href="#生成签名请求">生成签名请求</a></li>
+<li><a href="#指导他人生成证书">指导他人生成证书</a></li>
+<li><a href="#导入证书">导入证书</a></li>
+<li><a href="#应用签名">应用签名</a></li>
+<li><a href="#安装包签名">安装包签名</a></li>
+<li><a href="#验证安装包">验证安装包</a></li>
+<li><a href="#后记">后记</a></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+<p>最近做的一个外包项目要提交到应用市场了，但是他的开发者账户是个人账户，无法添加其他成员；同时我又不能要求他修改自己的Apple ID密码，然后发给我，这太不安全了。因为无法在XCode里面添加开发者账户，所以就不能使用XCode内置的工具上传应用了。对于这种情况，只能使用Apple提供的ApplicationLoader来进行应用发布，但是如何创建一个正确签名、可发布的应用包就成了很大的问题。</p>
+
+<p>根据开发者文档来看，ApplicationLoader只接受ipa（iOS）、pkg（OSX与IAP）还有zip文件，因为我做的是Mac应用，所以就要想办法创建一个可用的pkg包。</p>
+
+<p>经过一些搜索与尝试，最终还是成功把应用包提交了，下面就把过程总结一下。</p>
+
+<h2 id="生成app文件">生成app文件</h2>
+
+<p>具体如何archive，如何校对设置我就不详细说明了，如果有需要的话请自行google &ldquo;App Distribution Guide&rdquo;，值得一提的是，因为我们在XCode中没有证书与签名，所以在导出app的时候，只能选择最后一项（&rdquo;Export as a Mac Application&rdquo;）。</p>
+
+<p><img src="/assets/export-as-mac-application.png" alt="Export as Mac Application" /></p>
+
+<h2 id="所需证书">所需证书</h2>
+
+<p>创建pkg需要两步签名，首先要对刚刚生成的&rdquo;.app&rdquo;签名，这里需要用到&rdquo;Mac App Distribution&rdquo;这个证书；接下来还要为生成的安装包签名，这里要用的是&rdquo;Mac Installer Distribution&rdquo;这个证书。</p>
+
+<h2 id="生成签名请求">生成签名请求</h2>
+
+<p>虽然不能直接访问开发者账户，但是要将应用提交到应用市场一定要有开发者签名，这就需要有账户的人配合了。首先你要做好准备工作，或者说写申请。这里说的申请就是在本地创建一个签名请求。打开Keychain Access工具，按照下图选择：</p>
+
+<p><img src="/assets/create-signing-request-file-from-access-chain.png" alt="Create Signing Request" /></p>
+
+<p>因为要生成两个证书，而且根据我个人的测试，证书跟签名请求是一一对应的，所以在这一步需要创建两个签名请求文件，建议用&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;跟&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;来命名，其他的能区分的命名方式都可以。</p>
+
+<h2 id="指导他人生成证书">指导他人生成证书</h2>
+
+<p>接下来就要用这个签名去请求证书了，具体的过程是：</p>
+
+<ol>
+<li>访问<a href="http://developer.apple.com">开发者网站</a>，登陆Member Center。</li>
+<li>在Mac应用页面中，选择&rdquo;Certificates, Identifiers &amp; Profiles&rdquo;中的&rdquo;Certificates&rdquo;那一项。</li>
+<li>点击右上角的&rdquo;+&ldquo;按钮，创建新证书。</li>
+<li>在&rdquo;Production&rdquo;分类中选择&rdquo;Mac App Store&rdquo;。</li>
+<li>在下一步页面中，选择&rdquo;Mac App Distribution&rdquo;。</li>
+<li>在下一步页面中，选择&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;文件。</li>
+<li>点击&rdquo;Generate&rdquo;来生成证书（证书文件名默认为&rdquo;mac_app.cer&rdquo;）。</li>
+<li>重复1-7步，在第5步选择&rdquo;Mac Installer Distribution&rdquo;，在第六步中上传&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;文件。这里第7步生成的证书的默认文件名是&rdquo;mac_installer.cer&rdquo;。</li>
+</ol>
+
+<h2 id="导入证书">导入证书</h2>
+
+<p>分别双击导入&rdquo;mac_app.cer&rdquo;与&rdquo;mac_installer.cer&rdquo;，导入的时候选择“login”来导入当前用户的钥匙链中。导入之后最好通过名字过滤搜索，确认导入成功。</p>
+
+<h2 id="应用签名">应用签名</h2>
+
+<p>有了证书之后就可以对之前生成的&rdquo;.app&rdquo;文件签名了。命令如下：</p>
+
+<p><code>codesign -f -s &quot;3rd Party Mac Developer Application: XXX&quot; --entitlements “YYY.entitlements” &quot;ZZZ.app&quot;</code></p>
+
+<p>其中&rdquo;3rd Party Mac Developer Application: XXX&rdquo;就是证书中的那个名字，&rdquo;YYY.entitlements&rdquo;就是应用对应的entitlements的路径，&rdquo;ZZZ.app&rdquo;就是之前生成的app文件。</p>
+
+<h2 id="安装包签名">安装包签名</h2>
+
+<p>接着使用<code>productbuild</code>工具来生成安装包，命令如下：</p>
+
+<p><code>productbuild --component “ZZZ.app&quot; /Applications --sign &quot;3rd Party Mac Developer Installer: XXX&quot; UUU.pkg</code></p>
+
+<p>同样的，将&rdquo;ZZZ.app&rdquo;跟&rdquo;3rd Party Mac Developer Installer: XXX&rdquo;替换为具体的应用名称和开发者名称，注意这里用的是Installer这个证书；&rdquo;UUU.pkg&rdquo;就是最终的安装包的名字。</p>
+
+<h2 id="验证安装包">验证安装包</h2>
+
+<p>到这里这个应用包就生成完毕了，最后要验证一下，命令是</p>
+
+<p><code>sudo installer -store -pkg UUU.pkg -target /</code></p>
+
+<p>在输出的内容中，特别要关注是否有一条关于未正确签名的警告。如果一切顺利的话这个包就可以用ApplicationLoader提交到应用市场了。</p>
+
+<h2 id="后记">后记</h2>
+
+<p>这种方法不仅适用于帮他人打包，也适用于一些公司的自动化过程；另外，可能还有别的方法（比如将证书导入XCode中），我就没有详细研究了。</p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2014-07-21-stand-programming/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">开始站立式编程</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2016-02-27-thoughts-on-functional-programming/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">函数式编程随想（一）——函数式编程的好处及柯里化的意义</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

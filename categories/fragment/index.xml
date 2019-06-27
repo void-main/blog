@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>fragment on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/fragment/</link>
+    <description>Recent content in fragment on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Thu, 22 Aug 2013 19:55:32 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/fragment/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>How to Use New Android Animation API for Compat Fragment</title>
+      <link>http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/</link>
+      <pubDate>Thu, 22 Aug 2013 19:55:32 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/</guid>
+      <description>Why Since honeycomb (API level 11), Google has introduced a new set of APIs to help developers build better app, including Fragment and property animation.
+These new APIs are great, but they are not quite compatible with older devices, thus Google provided a support library to solve this problem.
+While building my app, I&amp;rsquo;m trying to use the compat fragment to support as many devices as possible, meanwhile, I want to take advantage of new set of animation apis to create animation easier.</description>
+    </item>
+    
+  </channel>
+</rss>

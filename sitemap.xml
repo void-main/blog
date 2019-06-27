@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2017-10-03-http-status-405vs501/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/http/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/protocol/</loc>
+    <lastmod>2017-10-03T21:31:37+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/ios/</loc>
+    <lastmod>2016-06-09T12:14:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/%E5%8A%A8%E7%94%BB/</loc>
+    <lastmod>2016-06-09T12:14:57+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2016-06-09-stroke-animation-in-action/</loc>
+    <lastmod>2016-06-09T12:14:57+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/functional-programming/</loc>
+    <lastmod>2016-02-27T15:17:43+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2016-02-27-thoughts-on-functional-programming/</loc>
+    <lastmod>2016-02-27T15:17:43+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/appstore/</loc>
+    <lastmod>2014-12-09T09:42:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/developer/</loc>
+    <lastmod>2014-12-09T09:42:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/cocoa/</loc>
+    <lastmod>2014-12-09T09:42:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/mac/</loc>
+    <lastmod>2014-12-09T09:42:32+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/</loc>
+    <lastmod>2014-12-09T09:42:32+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/health/</loc>
+    <lastmod>2014-07-21T09:45:12+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/startup/</loc>
+    <lastmod>2014-07-21T09:45:12+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-07-21-stand-programming/</loc>
+    <lastmod>2014-07-21T09:45:12+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/framework/</loc>
+    <lastmod>2014-07-16T09:34:09+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/learn/</loc>
+    <lastmod>2014-07-16T09:34:09+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/static-lib/</loc>
+    <lastmod>2014-07-16T09:34:09+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/</loc>
+    <lastmod>2014-07-16T09:34:09+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/nsimage/</loc>
+    <lastmod>2014-07-13T20:11:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/</loc>
+    <lastmod>2014-07-13T20:11:40+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/image/</loc>
+    <lastmod>2014-07-13T20:11:40+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/schedule/</loc>
+    <lastmod>2014-07-13T07:03:41+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/timetable/</loc>
+    <lastmod>2014-07-13T07:03:41+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-07-13-my-daily-timetable/</loc>
+    <lastmod>2014-07-13T07:03:41+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/app/</loc>
+    <lastmod>2014-07-01T20:39:34+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/cpp/</loc>
+    <lastmod>2014-07-01T20:39:34+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/swift/</loc>
+    <lastmod>2014-07-01T20:39:34+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-07-01-integrating-swift-with-c-plus-plus/</loc>
+    <lastmod>2014-07-01T20:39:34+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/osx/</loc>
+    <lastmod>2014-06-04T08:04:36+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/swiftapple/</loc>
+    <lastmod>2014-06-04T08:04:36+08:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-06-04-learning-swift-1/</loc>
+    <lastmod>2014-06-04T08:04:36+08:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/node-webkit/</loc>
+    <lastmod>2014-05-31T15:38:27+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/sqlite3/</loc>
+    <lastmod>2014-05-31T15:38:27+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/</loc>
+    <lastmod>2014-05-31T15:38:27+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-05-19-fuck-cfprefsd/</loc>
+    <lastmod>2014-05-18T18:27:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/leadership/</loc>
+    <lastmod>2014-05-18T18:27:30+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2014-05-18-leadership-from-a-dancing-guy/</loc>
+    <lastmod>2014-05-18T18:27:30+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/</loc>
+    <lastmod>2013-08-22T19:55:32+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/android/</loc>
+    <lastmod>2013-08-22T19:55:32+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/animator/</loc>
+    <lastmod>2013-08-22T19:55:32+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/fragment/</loc>
+    <lastmod>2013-08-22T19:55:32+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-sc2-on-mac/</loc>
+    <lastmod>2013-07-20T17:01:57+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/gamer/</loc>
+    <lastmod>2013-07-20T17:01:57+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/sc2/</loc>
+    <lastmod>2013-07-20T17:01:57+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/startcraft2/</loc>
+    <lastmod>2013-07-20T17:01:57+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-dota2-on-mac/</loc>
+    <lastmod>2013-07-20T16:40:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/dota/</loc>
+    <lastmod>2013-07-20T16:40:00+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/posts/2013-07-15-what-i-have-learned-from-terminal-notifier/</loc>
+    <lastmod>2013-07-15T14:34:57+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/categories/learning/</loc>
+    <lastmod>2013-07-15T14:34:57+00:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>http://blog.voidmain.guru/tags/</loc>
+    <priority>0</priority>
+  </url>
+  
+</urlset>

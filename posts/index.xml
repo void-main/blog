@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/posts/</link>
+    <description>Recent content in Posts on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Tue, 03 Oct 2017 21:31:37 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>HTTP状态码——405 vs 501</title>
+      <link>http://blog.voidmain.guru/posts/2017-10-03-http-status-405vs501/</link>
+      <pubDate>Tue, 03 Oct 2017 21:31:37 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2017-10-03-http-status-405vs501/</guid>
+      <description>HTTP状态码中有一些比较相似的状态码，容易让人产生混淆。其中比较冷门的一组是405(Method Not Allowed)与501(Not Implemented)。一个请求如果请求的方法不支持，不也算是没有实现么？这两者有何区别？我们就来仔细分析一下。
+状态码的定义 说起状态码定义，最具权威性的就是rfc-2616 文档了：
+6.5.5. 405 Method Not Allowed The 405 (Method Not Allowed) status code indicates that the method received in the request-line is known by the origin server but not supported by the target resource. The origin server MUST generate an Allow header field in a 405 response containing a list of the target resource&amp;rsquo;s currently supported methods.
+405状态码表示请求中的方法（回忆一下，HTTP请求行由3部分组成，请求方法、请求资源以及请求版本号，例如：GET /some/amazing/resource HTTP/1.1）目标服务器认识，但是对于这次请求的资源，服务器无法用请求的方法响应。同时协议要求，响应头重必须包含Allow头，返回支持对应资源的请求方法。
+6.6.2. 501 Not Implemented The 501 (Not Implemented) status code indicates that the server does not support the functionality required to fulfill the request.</description>
+    </item>
+    
+    <item>
+      <title>实战stroke动画</title>
+      <link>http://blog.voidmain.guru/posts/2016-06-09-stroke-animation-in-action/</link>
+      <pubDate>Thu, 09 Jun 2016 12:14:57 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2016-06-09-stroke-animation-in-action/</guid>
+      <description>iOS支持对许多属性进行动画操作，比如center，rotation等等。其中有两个属性常常被人忽略，但又能做出很有趣的效果，那就是strokeStart与strokeEnd。最近在做一个小东西的时候想要用动画在搜索图标与返回图表之间切换，效果如下：
+具体是如何实现的，且容我慢慢说来。
+设计动画 在具体做之前首先需要设计如何让这两个图标可以较为自然的切换。首先我们来分析下返回图标，
+如下图：
+返回图标非常简单，就是三根线，分别标记为1-3。然后分析下放大镜图标，如下图：
+如果我们按照放大镜手柄做一根延长线，恰好也可以把放大镜可以分为三部分，上下半圆（1，2）和放大镜手柄（3）。
+所以我就让两个半圆“变形”成两个返回按钮，同时为了增加不同类型的动画，我决定让放大镜的手柄旋转一下，具体效果如下图：
+放大镜的两个半圆在缩小的同时，返回图标的两条线在生长，同时放大镜的手柄向上摆动，看起来就像放大镜变形成了返回键。
+让我们一起来看一个慢速版本，这样可以比较直观的理解动画过程。
+定义状态 根据上面的分析可以看出这个动画有两个状态，分别是放大镜状态和返回键状态。可以用一个枚举来表示两个状态：
+enum AnimationState { case Magnifier case Back func nextState() -&amp;gt; AnimationState { return self == .Magnifier ? .Back : .Magnifier } }  这里我增加了一个nextState方法，主要用来计算下一个状态是什么，逻辑也非常简单，如果是放大镜，下一个状态就是返回；如果是返回，下一个状态就是放大镜。
+创建形状图层 那我们怎么表示圆形和直线呢？答案就是用UIBezierPath。UIBezierPath定义了许多形状绘制的方法，包括圆弧和直线。创建形状的代码非常简单，但是在创建之前我们需要一个“容器”来展示定义好的曲线，这就需要用到CAShapeLayer：
+func setupCircleLayer(layer: CAShapeLayer, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, strokeStart: CGFloat = 0, strokeEnd: CGFloat = 1, lineWidth: CGFloat = magnifierLineWidth, strokeColor: CGColor = magnifierColor) { layer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).</description>
+    </item>
+    
+    <item>
+      <title>函数式编程随想（一）——函数式编程的好处及柯里化的意义</title>
+      <link>http://blog.voidmain.guru/posts/2016-02-27-thoughts-on-functional-programming/</link>
+      <pubDate>Sat, 27 Feb 2016 15:17:43 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2016-02-27-thoughts-on-functional-programming/</guid>
+      <description>这篇博客主要是为了记录我最近关于函数式编程的好处，以及柯里化的作用的一些思考。
+首先来举个简单的例子，如果我们有一组数，比如[1,2,3,4,5,6]，我们想取其中的奇数，然后把这些奇数取平方，并返回这个数组，即，我们期望的结果是[1,9,25]，那么应该怎么写呢？
+最简单的写法就是来一次循环：
+list = [1, 2, 3, 4, 5, 6]; result = []; for(idx = 0; idx &amp;lt; list.length; idx ++) { if (list[idx] % 2 == 1) { result = result.concat(list[idx] * list[idx]); } } console.log(result); // [1, 9, 25]  真的，我劝你不要这么写。
+ “为什么不？课本上都是这么写的啊！”
+ 这么写确实正确，而且符合需求，但是看看我们做了多少额外的工作！我们不仅需要描述具体的业务逻辑(list[idx] % 2 == 1和list[idx] * list[idx])，还要操心如何遍历每个元素(for循环)、如何取出当前要处理的值(维护idx变量，以及用list[idx]来取值)，以及如何保存结果。
+对于这么一个简单的任务我们几乎在基础工作上用了一半以上的代码，代价太高了。
+有没有简单的写法呢？有啊！
+// JS code list = [1, 2, 3, 4, 5, 6]; result = list.filter((x) =&amp;gt; x % 2).</description>
+    </item>
+    
+    <item>
+      <title>帮他人提交Mac应用</title>
+      <link>http://blog.voidmain.guru/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/</link>
+      <pubDate>Tue, 09 Dec 2014 09:42:32 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/</guid>
+      <description>最近做的一个外包项目要提交到应用市场了，但是他的开发者账户是个人账户，无法添加其他成员；同时我又不能要求他修改自己的Apple ID密码，然后发给我，这太不安全了。因为无法在XCode里面添加开发者账户，所以就不能使用XCode内置的工具上传应用了。对于这种情况，只能使用Apple提供的ApplicationLoader来进行应用发布，但是如何创建一个正确签名、可发布的应用包就成了很大的问题。
+根据开发者文档来看，ApplicationLoader只接受ipa（iOS）、pkg（OSX与IAP）还有zip文件，因为我做的是Mac应用，所以就要想办法创建一个可用的pkg包。
+经过一些搜索与尝试，最终还是成功把应用包提交了，下面就把过程总结一下。
+生成app文件 具体如何archive，如何校对设置我就不详细说明了，如果有需要的话请自行google &amp;ldquo;App Distribution Guide&amp;rdquo;，值得一提的是，因为我们在XCode中没有证书与签名，所以在导出app的时候，只能选择最后一项（&amp;rdquo;Export as a Mac Application&amp;rdquo;）。
+所需证书 创建pkg需要两步签名，首先要对刚刚生成的&amp;rdquo;.app&amp;rdquo;签名，这里需要用到&amp;rdquo;Mac App Distribution&amp;rdquo;这个证书；接下来还要为生成的安装包签名，这里要用的是&amp;rdquo;Mac Installer Distribution&amp;rdquo;这个证书。
+生成签名请求 虽然不能直接访问开发者账户，但是要将应用提交到应用市场一定要有开发者签名，这就需要有账户的人配合了。首先你要做好准备工作，或者说写申请。这里说的申请就是在本地创建一个签名请求。打开Keychain Access工具，按照下图选择：
+因为要生成两个证书，而且根据我个人的测试，证书跟签名请求是一一对应的，所以在这一步需要创建两个签名请求文件，建议用&amp;rdquo;AppCertificateSigningRequest.certSigningRequest&amp;rdquo;跟&amp;rdquo;InstallerCertificateSigningRequest.certSigningRequest&amp;rdquo;来命名，其他的能区分的命名方式都可以。
+指导他人生成证书 接下来就要用这个签名去请求证书了，具体的过程是：
+ 访问开发者网站，登陆Member Center。 在Mac应用页面中，选择&amp;rdquo;Certificates, Identifiers &amp;amp; Profiles&amp;rdquo;中的&amp;rdquo;Certificates&amp;rdquo;那一项。 点击右上角的&amp;rdquo;+&amp;ldquo;按钮，创建新证书。 在&amp;rdquo;Production&amp;rdquo;分类中选择&amp;rdquo;Mac App Store&amp;rdquo;。 在下一步页面中，选择&amp;rdquo;Mac App Distribution&amp;rdquo;。 在下一步页面中，选择&amp;rdquo;AppCertificateSigningRequest.certSigningRequest&amp;rdquo;文件。 点击&amp;rdquo;Generate&amp;rdquo;来生成证书（证书文件名默认为&amp;rdquo;mac_app.cer&amp;rdquo;）。 重复1-7步，在第5步选择&amp;rdquo;Mac Installer Distribution&amp;rdquo;，在第六步中上传&amp;rdquo;InstallerCertificateSigningRequest.certSigningRequest&amp;rdquo;文件。这里第7步生成的证书的默认文件名是&amp;rdquo;mac_installer.cer&amp;rdquo;。  导入证书 分别双击导入&amp;rdquo;mac_app.cer&amp;rdquo;与&amp;rdquo;mac_installer.cer&amp;rdquo;，导入的时候选择“login”来导入当前用户的钥匙链中。导入之后最好通过名字过滤搜索，确认导入成功。
+应用签名 有了证书之后就可以对之前生成的&amp;rdquo;.app&amp;rdquo;文件签名了。命令如下：
+codesign -f -s &amp;quot;3rd Party Mac Developer Application: XXX&amp;quot; --entitlements “YYY.entitlements” &amp;quot;ZZZ.app&amp;quot;
+其中&amp;rdquo;3rd Party Mac Developer Application: XXX&amp;rdquo;就是证书中的那个名字，&amp;rdquo;YYY.entitlements&amp;rdquo;就是应用对应的entitlements的路径，&amp;rdquo;ZZZ.app&amp;rdquo;就是之前生成的app文件。
+安装包签名 接着使用productbuild工具来生成安装包，命令如下：</description>
+    </item>
+    
+    <item>
+      <title>开始站立式编程</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-21-stand-programming/</link>
+      <pubDate>Mon, 21 Jul 2014 09:45:12 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-21-stand-programming/</guid>
+      <description>最开始创立公司的时候我就准备尝试站立式编程，但是因为身高(~186cm)的原因，很难找到合适的桌子，我们甚至买了一个简单的吧台高桌，但是仍然不够高。
+后来因为颈椎不舒服等原因吧，这件事又提上了议程。因为没有足够高的桌子，所以只能靠外设笔记本支架来补充了，我是在京东上挑选了这个支架。选择这个的时候我主要关注最大高度，稳定性以及可调节性，刚刚提到的那个支架这三点看上去都不错。
+下单之后足足等了一个星期才到，到了之后有一点硬件问题，不过影响不是很大，而且售后的态度也非常不错。在简单组装之后，就可以很好的满足我的要求了。
+正面：
+背面：
+真人版：
+早上装好之后工作了3个小时左右，支架稍微有点抖动（因为我没用外接键盘），但支点比较稳固，可以接受；腿还是有点儿累，而且不断的出汗（正面照里面可以看到我准备的擦汗毛巾），中间休息了10分钟左右，身体感觉还行；工作效率方面，感觉比坐着的时候稍微有一点差距，但影响不大。等我再试用一段时间再来聊聊看吧。</description>
+    </item>
+    
+    <item>
+      <title>跟郭总学开发（1）——Mac应用使用OpenCV的问题与解决方案</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/</link>
+      <pubDate>Wed, 16 Jul 2014 09:34:09 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/</guid>
+      <description>最近有机会跟郭总合作开发一些项目，真是每天都有新姿势啊，不记录下来都觉得可惜。
+起因 先来描述一下遇到的问题：我们的项目要用到OpenCV，如果是为iOS开发的话，直接编译生成opencv2.framework就可以了，iOS默认将framework静态编译到最终的二进制中，但是在Mac上没有现成的framework framework不会静态编译，仍然要复制到最终的bundle中，这就可能带来问题。
+我是用brew install opencv安装的opencv，没有其他特殊指令，最终是在/usr/local/Cellar/opencv/2.4.9/lib下生成了一堆dylib文件，然后把这些文件放到项目里面，同时选择复制到最终的bundle中。但是这样产生的.app在运行时会有一些路径相关的错误（一般是image not found什么的），直接就崩了。
+这样我们就只能选择用静态链接库了。如果是我来解决这个问题的话，我一定会想办法安装一个生成.a版本的opencv，很有可能会自己编译源代码。
+如果你比较急着用的话，可以直接下载opencv_osx.a.zip。
+郭总说 让我们看看郭总是怎么搞的：
+ 最后是去这下了个 iOS 的 framework 把里面二进制拿出来 去掉了arm http://sourceforge.net/projects/opencvlibrary/files/opencv-ios/
+反正要给 iOS 模拟器就有 x64 i386
+framework里面有个核心的二进制 加个.a后缀 就是 static lib 直接拿过来就行了
+我嫌大 用lipo拆开 去掉了arm的重合了一个
+一共只有3行操作
+ 喂喂，略显高端了吧！
+这里的要点一方面是有的iOS framework因为要支持iOS模拟器，所以会在核心二进制里面包含x64和i386可用的static lib，我们如果有需要可以利用这些生成好的二进制；
+另外一方面就是lipo，如果你跟我一样从来没见过这个命令，赶快去man lipo一下吧！
+实战 接下来我们来实战一下，首先从郭总提供的url里面下载好这个framework，找到这个核心的二进制：
+接下来先看一下这个二进制包含了哪些arch：
+➜ voidmain@MBP ~/Desktop lipo -info opencv2 Architectures in the fat file: opencv2 are: armv7 armv7s i386 x86_64 arm64  正如郭总所说，这里面除了给iOS准备的arm系列外，还包含着i386跟x86_64这两个mac上可用的framework，然后我们就需要剔除arm系列，给这个二进制瘦身一下：
+➜ voidmain@MBP ~/Desktop lipo opencv2 -extract i386 -extract x86_64 -output opencv2_osx.</description>
+    </item>
+    
+    <item>
+      <title>NSImage在读取高DPI图像时的bug及解决方案</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/</link>
+      <pubDate>Sun, 13 Jul 2014 20:11:40 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/</guid>
+      <description>这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？
+比如下面这个图：
+它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。
+NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url]; NSLog(@&amp;quot;before: %@&amp;quot;, NSStringFromSize(srcImage.size));  这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：
+其实要解决这个问题并不是特别困难。尽管NSImage在计算尺寸的时候是按72dpi来计算的，但是NSImage的内部表示NSBitmapImageRep还是有字段保留着图像的实际尺寸，分别是pixelsWide跟pixelsHigh。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：
+- (NSBitmapImageRep *)bitmapImageRepresentation { // NSImage可能包含很多representation，需要迭代一下 NSArray * imageReps = [self representations]; float width = 0; float height = 0; for (NSImageRep * imageRep in imageReps) { // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率 if ([imageRep pixelsWide] &amp;gt; width) width = [imageRep pixelsWide]; if ([imageRep pixelsHigh] &amp;gt; height) height = [imageRep pixelsHigh]; } if(width &amp;lt; 1 || height &amp;lt; 1) return nil; // 重新绘制 NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL pixelsWide: width pixelsHigh: height bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar: NO colorSpaceName: NSDeviceRGBColorSpace bytesPerRow: 0 bitsPerPixel: 0]; NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep]; [NSGraphicsContext saveGraphicsState]; [NSGraphicsContext setCurrentContext: ctx]; // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height)) [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.</description>
+    </item>
+    
+    <item>
+      <title>我的工作时间表</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-13-my-daily-timetable/</link>
+      <pubDate>Sun, 13 Jul 2014 07:03:41 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-13-my-daily-timetable/</guid>
+      <description>对于创业者来说，保持每天精力充沛十分重要，因此良好和稳定的作息习惯是必不可少的。本文就来分享一下我每天的工作、休息时间。
+其实最开始我的时间表不是现在这样，大致说来就是晚上12点－1点睡觉，早上8点起床，中午有2个小时的午休。后来因为合伙人租的房子附近每天早上6点开始施工，我们就把时间表前移了两个小时：
+ 6:10 起床 6:10 - 6:30 洗漱 6:30 - 7:00 晨练 (注1) 7:00 - 7:10 消消汗，冷静冷静，准备开始工作 7:10 - 11:00 上午工作时间 (注2) 11:00 - 11:40 吃午饭 11:40 - 12:00 午休前随便刷会社交网络＋视频网站 12:00 - 14:00 午休 14:00 - 17:00 下午工作时间 (注3) 17:00 - 18:00 晚饭时间 18:00 - 20:00 自由支配时间 (注4) 20:00 - 21:00 消遣时间 (注5) 21:00 - 22:00 洗澡、给家里打电话 (注6) 22:00 - 23:00 躺在床上刷手机 (注7) 23:00 熄灯睡觉  这个时间表每周会使用6天，因为我已经脱团，所以每周会有一天时间去妹子学校刷脸。这一天仍然会早起、早睡，但是没有午休了。
+注释  晨练会根据北京天气情况，如果是雾霾的话就不晨练了。这一点有待改进，雾霾的话应该改为室内锻炼。一般我的晨练就是跑步＋快走。大概各占15分钟。 上午工作时间是最宝贵的，因为刚睡醒头脑清醒，加上晨练结束比较兴奋，这段时间是生产力最高的时间。一般我会用来看需要研究的论文或者没解决的疑难问题。 因为我的午睡习惯不太好，午睡时间较长，所以下午起床之后刚开始的一段时间比较昏昏沉沉，这段时间我一般会去研究一个比较能刺激大脑的，而且比较有趣的问题，比如如何实现XXXX效果，如何改进XXXX代码等等。 这段时间比较自由，不太确定。有的时候可能晚上出去吃大餐，这段时间都在吃饭；有的时候可能突然有了一个兴趣点，这段时间就拿来做20%项目；每周三晚上是我们公司的&amp;rdquo;Halo Night&amp;rdquo;＋&amp;rdquo;Laundary Night&amp;rdquo;（TBBT粉有没有很耳熟），所以这段时间就去洗衣服＋打Halo；还有的时候我自己直接就用来打游戏了。 这段消遣时间也不是很固定，如果不在消遣可能就在继续写代码。这段消遣时间一般会跟小伙伴一起打打星际什么的，或者看看星际视频。 给家里打电话其实挺重要的，也许并没有什么特别的话题，但是重要的是让父母知道你一切平安。 一般我会先看一集美剧/日剧/日漫，然后听《网易轻松一刻语音版》或者《网易轻松一刻新闻七点整》，然后慢慢入睡。  可以改进的地方 我觉得最需要改进的就是戒掉躺在床上刷手机这个环节，改称做仰卧起坐/俯卧撑之类的比较好。但是手机中毒过深，慢慢戒吧。</description>
+    </item>
+    
+    <item>
+      <title>在Swift代码中整合C&#43;&#43;类库</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-01-integrating-swift-with-c-plus-plus/</link>
+      <pubDate>Tue, 01 Jul 2014 20:39:34 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-01-integrating-swift-with-c-plus-plus/</guid>
+      <description>最近想用Swift开发一些小玩具，其中一个应用需要用到Box2d这个物理引擎，所以就遇到了如何将C++代码与Swift代码整合的问题。
+在项目中整合Box2d并不困难，可以直接在Podfile里面添加pod &#39;box2d&#39;，比较麻烦的是怎么在代码中使用。
+在WWDC的Session 406: Integrating Swift with Objective-C中，Apple只是介绍了怎么将Swift代码跟Objective-C代码做整合，但是没有提C++，后来在官方文档中看到了这样一段话：
+ You cannot import C++ code directly into Swift. Instead, create an Objective-C or C wrapper for C++ code.
+ 这就很简单了，首先我们需要创建一个ObjC的类，用类创建向导很容易就能完成这个工作：
+在创建过程中Xcode会提示是否需要创建bridge，选择创建就好了。
+接下来就可以编辑XXXX-Bridging-Header.h这个文件了，根据我的需要，这里应该#import &amp;lt;Box2d/Box2d.h&amp;gt;，所以我就直接把这句话放到bridging header里面了，编译，BOOM!
+ &amp;lt;unknown&amp;gt;:0: error: /path/to/project/Pods/Headers/Box2D/Common/b2Settings.h:22: &amp;lsquo;cassert&amp;rsquo; file not found
+ 如果google这个问题的话，可以看到各种答案都是说应该把.m文件替换成.mm文件，但是我现在压根没用上我刚刚创建的VMBox2dWrapper.m，这就是问题所在。这里需要做2个修改，一个是把VMBox2dWrapper.m的后缀替换成.mm，另外一个是把#import &amp;lt;Box2d/Box2d.h&amp;gt;移动到这个.mm文件里面，而XXXX-Bridging-Header.h这个文件里面#import &amp;quot;VMBox2dWrapper.h&amp;quot;。经过这两个改动以后，就可以顺利编译了。
+还有一个问题是这个Wrapper类里面写什么，基本就是看项目需要用到什么再添加什么方法了，因为我的项目才刚刚开始，如果后续有什么需要注意的地方再来添加。</description>
+    </item>
+    
+    <item>
+      <title>使用Swift(1)</title>
+      <link>http://blog.voidmain.guru/posts/2014-06-04-learning-swift-1/</link>
+      <pubDate>Wed, 04 Jun 2014 08:04:36 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-06-04-learning-swift-1/</guid>
+      <description>序言 Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本官方Guide，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。
+当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考Using Swift with Cocoa and Objective-C这篇文档。
+另外，Swift刚刚推出一天就已经有开发者用它开发了FlappyBird，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！
+PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。
+环境要求 要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。
+代码 本文中使用道德测试代码都可以在SwiftWithCocoa这个repo中找到，大部分代码都在MyPlayground中。
+“变量”不变 第一次接触这个概念是在了解Scala的时候，Scala中有两个关键字，分别是val和var，用var声明的变量跟其他语言中的一样，可以改变值，但是val声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。
+Swift也提供了类似的声明方法，分别是let和var，用let声明的是常量，用var声明的是变量。
+基本数据类型 Tuple Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。
+// Returning from func func response() -&amp;gt; (Int, String) { return (404, &amp;quot;Not Found&amp;quot;) } var code: Int, description: String (code, description) = response() // code == 404 // description == &amp;quot;Not Found&amp;quot;  我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：
+// Swapping vars var first = 1 var second = 2 // Change 2 to &amp;quot;ASDF&amp;quot; and see the error (first, second) = (second, first) // first == 2 // second == 1  需要注意的是，因为Swift强调的是类型安全，所以上面例子中的first和second必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。</description>
+    </item>
+    
+    <item>
+      <title>在node-webkit中使用sqlite3</title>
+      <link>http://blog.voidmain.guru/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/</link>
+      <pubDate>Sat, 31 May 2014 15:38:27 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/</guid>
+      <description>这两天在调研使用node-webkit开发Mac应用并且提交到Mac App Store的可能性。这类客户端应用有非常通用的一点就是需要一个本地数据存储功能。根据node-webkit的官方wiki，我觉得最适合的就是所谓的Web SQL Database了，同时文档中也说是使用sqlite3来实现的。因此就需要实现sqlite3与node-webkit的整合。
+为了测试，我直接clone了一个windows版的demo。最开始我的尝试是使用node-webkit 0.9.2版（使用最新版的目的是为了保证node-webkit没有使用一些过时的或者private的api导致MAS审核悲剧）。首先我用npm install sqlite3安装了sqlite3 for node，结束之后运行nw node-webkit-sqlite3-windows-demo，结果提示error：
+Error: Cannot find module &#39;/Users/voidmain/WorkSpace/NodeJS/node-webkit-sqlite3-windows-demo/node_modules/sqlite3/lib/binding/node-v11-darwin-ia32/node_sqlite3.node&#39;  如果直接google这个错误会有人说明使用nw-gyp rebuild --target=&amp;lt;node-webkit-version&amp;gt; --arch=ia32来rebuild一下（如果没有安装nw-gyp的话需要先npm install一下），但是使用node-webkit 0.9.2的话，编译不会通过，会提示有error，于是继续google，终于在sqlite3项目的issue 265中看到了这个：
+看来是死胡同了，无奈只能使用更早版本的node-webkit，所以我换成了node-webkit 0.8.6版，然后再次用nw-gyp编译，还是出错，错误是Undefined variable module_name in binding.gyp while trying to load binding.gyp，继续google，最后又在wiki中找到了解答：Build native modules with nw gyp，关键的一段是：
+ For some packages you may need to use node-pre-gyp (e.g. when you get the error &amp;ldquo;Undefined variable module_name in binding.gyp while trying to load binding.gyp&amp;rdquo;), which supports building for both node.</description>
+    </item>
+    
+    <item>
+      <title>NSUserDefaults无法保存？</title>
+      <link>http://blog.voidmain.guru/posts/2014-05-19-fuck-cfprefsd/</link>
+      <pubDate>Sun, 18 May 2014 18:27:30 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-05-19-fuck-cfprefsd/</guid>
+      <description>FML。。花了一上午调了一个bug。。
+事情是这样的，我正在写的这个mac应用用到了Core Data，所以就把Core Data的文件放到了~/Library/Container/my.app.container这个目录下。但是在开发的过程中entity的结构总会发生变化，在基本稳定之前我也不想写升级那些，所以就偷懒*把container目录给删了*。
+上午在用NSUserDefaults保存用户的选项的时候，当前保存成功，调用[[NSUserDefaults standardUserDefaults] synchronize]也返回YES，但是就是重启应用之后保存的内容就消失了。去~/Library/Preferences目录下找也确实没有对应的文件。
+调了一上午，尝试了各种解决方案，也没搞定，最后终于在这个SO问题里面找到了答案。
+关键是answer下面的第一个comment：
+ Also if you move the container while testing / debugging to the trash, the cfprefsd (see Activity Monitor) still keeps a link to the .plist. Empty the trash and force quit both cfprefsd (user and root).
+ 用ps一看果然有2个cfprefsd，有一个应该就是之前删除container的时候留下的，把它kill了，然后重试就好了！
+感谢 @mahal，真是救了我一命！</description>
+    </item>
+    
+    <item>
+      <title>关于Leadership</title>
+      <link>http://blog.voidmain.guru/posts/2014-05-18-leadership-from-a-dancing-guy/</link>
+      <pubDate>Sun, 18 May 2014 18:27:30 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-05-18-leadership-from-a-dancing-guy/</guid>
+      <description> 今天被朋友推荐看了一段视频，叫&amp;rdquo;Leadership From A Dancing Guy&amp;rdquo;：
+youtube地址：
+ youku地址：
+ 无解说加长版地址：
+   
+我的思考  如果想要引发一场潮流的话，首先你要有勇气站出来，表达自己的观点 你的观点（产品）必须容易被其他人接受（所谓easy to follow） 作为最开始的leader，你需要尝试辅导最开始的几个follower，因为他们很重要（if the leader is the flint,the first follower is really the spark） 如果想要引领潮流，不要想着“你”到底有多重要，重要的是这场潮流（movement） 作为leader不要怕失败，从那个加长版本可以看到，他最开始试图教好几个人如何跟他一起跳他的舞蹈，但是都失败了，可是他仍然自娱自乐，没有停下来 换位思考，如果你看到有人在尝试引发一场潮流，而你觉得他的行为能吸引你，不要犹豫，站出来成为first followers，帮助一下leader吧！  </description>
+    </item>
+    
+    <item>
+      <title>How to Use New Android Animation API for Compat Fragment</title>
+      <link>http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/</link>
+      <pubDate>Thu, 22 Aug 2013 19:55:32 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-08-22-how-to-use-new-android-animation-api-for-compat-fragment/</guid>
+      <description>Why Since honeycomb (API level 11), Google has introduced a new set of APIs to help developers build better app, including Fragment and property animation.
+These new APIs are great, but they are not quite compatible with older devices, thus Google provided a support library to solve this problem.
+While building my app, I&amp;rsquo;m trying to use the compat fragment to support as many devices as possible, meanwhile, I want to take advantage of new set of animation apis to create animation easier.</description>
+    </item>
+    
+    <item>
+      <title>[更新-教程]如何在Mac上玩儿国服星际2（原生，非port版）</title>
+      <link>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-sc2-on-mac/</link>
+      <pubDate>Sat, 20 Jul 2013 17:01:57 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-sc2-on-mac/</guid>
+      <description> ##更新 前一阵重装了一次星际2，发现可以直接通过暴雪登陆器mac版安装，所以之前的方法就作废了，登陆器使用方法请参考官方博客。
+&amp;ndash;原文&amp;ndash;
+星际争霸2更新虫心之后，以前的通过region.xml在Mac上移植方法好像失效了，好不容易找到了一种解决方案，把我操作的流程写下来，希望能对大家有帮助。话不多说，进入正题。
+准备工作 要实现这个流程准备工作的任务还是挺重的，主要分为一下几步：
+- 在Windows上下载一个星际2的客户端，用网易提供的绿色版就行。 - 在Mac上下载台湾（美国应该也行，我没测试过）服务器的Mac客户端。在Mac上进行安装，注意，不用全部更新完成，更新至绿色可执行状态即可。 - 下载Support.dmg和SC_II_apps&amp;amp;toolsCN[2.0.6.25180].dmg两个文件，注意，不要用浏览器打开，用迅雷直接下载URL。
+开始替换 ~~以上内容全部下载完成后就要开始操作了： 1.把国服绿色版压缩包解压。 2.把Support.dmg和apps&amp;amp;tools.dmg里面的内容复制到解压路径下，必要时替换对应内容。 3.把Mac上台湾客户端下的StarCraft II， StarCraft II Editor，StarCraft II Public Test和Versions的内容复制&amp;amp;替换到解压路径下。 4.启动游戏，这个时候游戏的客户端可能会一直停在初始化阶段，可以从菜单中选择修复客户端，然后静静的等着它完成更新。 5.更新结束后，点击执行，这时候发现，客户端的右边多了中国特色的几行字，恭喜你，成功了！ ~~
+说明 我之前使用了挺多种方法的，可能在某些步骤上由于之前方法遗留的内容导致与各位的流程不太一致，但基本思想应该是通用的。另外，坛子里面有人说不能更新，我倒是没有这个问题。
+致谢 这篇博客的方法主要依赖于这个博文，感谢大神提供的方法。最后上图，并祝大家gl hf！ </description>
+    </item>
+    
+    <item>
+      <title>[教程]如何在Mac上玩儿国服Dota2（非port版）</title>
+      <link>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-dota2-on-mac/</link>
+      <pubDate>Sat, 20 Jul 2013 16:40:00 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-dota2-on-mac/</guid>
+      <description> 很多人不买Mac的原因（之一）是Mac上没啥游戏，这一点确实没错，不过仔细想想大家有多少时间玩儿*那么*多游戏呢？其实平时有一两个长玩的游戏也就不错了。另一方面，很多著名游戏例如WOW，Dota2，SC2，D3等等都有原生的Mac版，本来就没有太大的游戏障碍。
+*但是*这些游戏都没有原生的国服版本，真是悲哀啊。于是Mac党只能自立更生，寻找解决方案，这篇博文就是教大家如何在Mac上玩儿原生的Dota2。接下来还会写一篇关于如何在Mac上玩儿原生国服星际2的教程。
+准备工作 言归正传，要想在Mac上玩国服Dota2，首先需要有一个完美世界的帐号，以及Dota2激活码（等公测了这个激活码应该也就不是必须的了）。为了进入游戏，还需要一个Steam帐号。有了这些就万事具备了。
+绑定帐号 在Mac上安装Steam平台，并用自己的steam帐号登陆，这个时候直接搜索Dota2应该是无法找到的，好像是对中国地区不开放的原因，所以需要在朋友或者自己的windows电脑上，下载国服的Dota2客户端，然后用Steam帐号登陆，并绑定自己的完美世界帐号以及Dota2激活码。
+下载内容 绑定结束后，再次登陆Steam平台，就会看到Dota2和Dota2 Test两个游戏，如下图。其中Dota2 Test是Beta版本的Dota2，一般用于公测，*注意*：下载这个版本的Dota2是无法登陆国服的，因为国服没有对应的服务。所以咱们直接下载Dota2就可以了。等待下载完成。 设置参数 下载完成后，在Dota2这一项目上点击右键，选择Properties选项，点击Set Launch Options按钮，在弹出框中输入：-perfectworld steam，然后点OK，如下图。这样一来，就指定了Steam运行的是完美世界的服务，也就是国服了。 Have Fun 准备就绪后就可以启动游戏了，在我的本子上测试效果还可以，稍微有点模糊，另外，因为Steam上下载的内容是英文版的，所以人物的对话和配音都是英文的，这一点应该可以通过将国服对应文件复制过来解决，但是我没有具体检查文件列表，有兴趣的朋友可以研究下，并且欢迎给我留言，我好即时补充。借用Dota蛋疼集锦里面小Y的话吧，Don&amp;rsquo;t worry, be happy! </description>
+    </item>
+    
+    <item>
+      <title>What I have learned from terminal-notifier</title>
+      <link>http://blog.voidmain.guru/posts/2013-07-15-what-i-have-learned-from-terminal-notifier/</link>
+      <pubDate>Mon, 15 Jul 2013 14:34:57 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-07-15-what-i-have-learned-from-terminal-notifier/</guid>
+      <description>The terminal-notifier is a cute command-line tool written by alloy that sends User Notifications for OS X systems running 10.8 or later.
+There&amp;rsquo;s not so much code down there, but still I&amp;rsquo;ve learned a lot, and here&amp;rsquo;s what I&amp;rsquo;ve got:
+Architecture Overview There are two major parts in this project. To deliver NSUserNotification or respond to user click event, we need a Cocoa App even though there will never be a display window or something.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Posts - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="Posts" />
+<meta property="og:description" content="This is a blog site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/" />
+
+<meta property="og:updated_time" content="2017-10-03T21:31:37+00:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Posts"/>
+<meta name="twitter:description" content="This is a blog site."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/posts/index.xml" title="VoidMain's Blog">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">Posts</h1>
+	</header><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2017-10-03-http-status-405vs501/" rel="bookmark">
+			HTTP状态码——405 vs 501
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2017-10-03T21:31:37">2017-10-03</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/http" rel="category">http</a>, <a class="meta__link" href="/categories/protocol" rel="category">protocol</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		HTTP状态码中有一些比较相似的状态码，容易让人产生混淆。其中比较冷门的一组是405(Method Not Allowed)与501(Not Implemented)。一个请求如果请求的方法不支持，不也算是没有实现么？这两者有何区别？我们就来仔细分析一下。
+状态码的定义 说起状态码定义，最具权威性的就是rfc-2616 文档了：
+6.5.5. 405 Method Not Allowed The 405 (Method Not Allowed) status code indicates that the method received in the request-line is known by the origin server but not supported by the target resource. The origin server MUST generate an Allow header field in a 405 response containing a list of the target resource&rsquo;s currently supported methods.
+405状态码表示请求中的方法（回忆一下，HTTP请求行由3部分组成，请求方法、请求资源以及请求版本号，例如：GET /some/amazing/resource HTTP/1.1）目标服务器认识，但是对于这次请求的资源，服务器无法用请求的方法响应。同时协议要求，响应头重必须包含Allow头，返回支持对应资源的请求方法。
+6.6.2. 501 Not Implemented The 501 (Not Implemented) status code indicates that the server does not support the functionality required to fulfill the request.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2017-10-03-http-status-405vs501/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2016-06-09-stroke-animation-in-action/" rel="bookmark">
+			实战stroke动画
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2016-06-09T12:14:57">2016-06-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/%e5%8a%a8%e7%94%bb" rel="category">动画</a>, <a class="meta__link" href="/categories/ios" rel="category">iOS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		iOS支持对许多属性进行动画操作，比如center，rotation等等。其中有两个属性常常被人忽略，但又能做出很有趣的效果，那就是strokeStart与strokeEnd。最近在做一个小东西的时候想要用动画在搜索图标与返回图表之间切换，效果如下：
+具体是如何实现的，且容我慢慢说来。
+设计动画 在具体做之前首先需要设计如何让这两个图标可以较为自然的切换。首先我们来分析下返回图标，
+如下图：
+返回图标非常简单，就是三根线，分别标记为1-3。然后分析下放大镜图标，如下图：
+如果我们按照放大镜手柄做一根延长线，恰好也可以把放大镜可以分为三部分，上下半圆（1，2）和放大镜手柄（3）。
+所以我就让两个半圆“变形”成两个返回按钮，同时为了增加不同类型的动画，我决定让放大镜的手柄旋转一下，具体效果如下图：
+放大镜的两个半圆在缩小的同时，返回图标的两条线在生长，同时放大镜的手柄向上摆动，看起来就像放大镜变形成了返回键。
+让我们一起来看一个慢速版本，这样可以比较直观的理解动画过程。
+定义状态 根据上面的分析可以看出这个动画有两个状态，分别是放大镜状态和返回键状态。可以用一个枚举来表示两个状态：
+enum AnimationState { case Magnifier case Back func nextState() -&gt; AnimationState { return self == .Magnifier ? .Back : .Magnifier } }  这里我增加了一个nextState方法，主要用来计算下一个状态是什么，逻辑也非常简单，如果是放大镜，下一个状态就是返回；如果是返回，下一个状态就是放大镜。
+创建形状图层 那我们怎么表示圆形和直线呢？答案就是用UIBezierPath。UIBezierPath定义了许多形状绘制的方法，包括圆弧和直线。创建形状的代码非常简单，但是在创建之前我们需要一个“容器”来展示定义好的曲线，这就需要用到CAShapeLayer：
+func setupCircleLayer(layer: CAShapeLayer, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, strokeStart: CGFloat = 0, strokeEnd: CGFloat = 1, lineWidth: CGFloat = magnifierLineWidth, strokeColor: CGColor = magnifierColor) { layer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2016-06-09-stroke-animation-in-action/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2016-02-27-thoughts-on-functional-programming/" rel="bookmark">
+			函数式编程随想（一）——函数式编程的好处及柯里化的意义
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2016-02-27T15:17:43">2016-02-27</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/functional-programming" rel="category">functional programming</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		这篇博客主要是为了记录我最近关于函数式编程的好处，以及柯里化的作用的一些思考。
+首先来举个简单的例子，如果我们有一组数，比如[1,2,3,4,5,6]，我们想取其中的奇数，然后把这些奇数取平方，并返回这个数组，即，我们期望的结果是[1,9,25]，那么应该怎么写呢？
+最简单的写法就是来一次循环：
+list = [1, 2, 3, 4, 5, 6]; result = []; for(idx = 0; idx &lt; list.length; idx ++) { if (list[idx] % 2 == 1) { result = result.concat(list[idx] * list[idx]); } } console.log(result); // [1, 9, 25]  真的，我劝你不要这么写。
+ “为什么不？课本上都是这么写的啊！”
+ 这么写确实正确，而且符合需求，但是看看我们做了多少额外的工作！我们不仅需要描述具体的业务逻辑(list[idx] % 2 == 1和list[idx] * list[idx])，还要操心如何遍历每个元素(for循环)、如何取出当前要处理的值(维护idx变量，以及用list[idx]来取值)，以及如何保存结果。
+对于这么一个简单的任务我们几乎在基础工作上用了一半以上的代码，代价太高了。
+有没有简单的写法呢？有啊！
+// JS code list = [1, 2, 3, 4, 5, 6]; result = list.filter((x) =&gt; x % 2).
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2016-02-27-thoughts-on-functional-programming/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/" rel="bookmark">
+			帮他人提交Mac应用
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-12-09T09:42:32">2014-12-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/appstore" rel="category">AppStore</a>, <a class="meta__link" href="/categories/cocoa" rel="category">Cocoa</a>, <a class="meta__link" href="/categories/mac" rel="category">Mac</a>, <a class="meta__link" href="/categories/developer" rel="category">Developer</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		最近做的一个外包项目要提交到应用市场了，但是他的开发者账户是个人账户，无法添加其他成员；同时我又不能要求他修改自己的Apple ID密码，然后发给我，这太不安全了。因为无法在XCode里面添加开发者账户，所以就不能使用XCode内置的工具上传应用了。对于这种情况，只能使用Apple提供的ApplicationLoader来进行应用发布，但是如何创建一个正确签名、可发布的应用包就成了很大的问题。
+根据开发者文档来看，ApplicationLoader只接受ipa（iOS）、pkg（OSX与IAP）还有zip文件，因为我做的是Mac应用，所以就要想办法创建一个可用的pkg包。
+经过一些搜索与尝试，最终还是成功把应用包提交了，下面就把过程总结一下。
+生成app文件 具体如何archive，如何校对设置我就不详细说明了，如果有需要的话请自行google &ldquo;App Distribution Guide&rdquo;，值得一提的是，因为我们在XCode中没有证书与签名，所以在导出app的时候，只能选择最后一项（&rdquo;Export as a Mac Application&rdquo;）。
+所需证书 创建pkg需要两步签名，首先要对刚刚生成的&rdquo;.app&rdquo;签名，这里需要用到&rdquo;Mac App Distribution&rdquo;这个证书；接下来还要为生成的安装包签名，这里要用的是&rdquo;Mac Installer Distribution&rdquo;这个证书。
+生成签名请求 虽然不能直接访问开发者账户，但是要将应用提交到应用市场一定要有开发者签名，这就需要有账户的人配合了。首先你要做好准备工作，或者说写申请。这里说的申请就是在本地创建一个签名请求。打开Keychain Access工具，按照下图选择：
+因为要生成两个证书，而且根据我个人的测试，证书跟签名请求是一一对应的，所以在这一步需要创建两个签名请求文件，建议用&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;跟&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;来命名，其他的能区分的命名方式都可以。
+指导他人生成证书 接下来就要用这个签名去请求证书了，具体的过程是：
+ 访问开发者网站，登陆Member Center。 在Mac应用页面中，选择&rdquo;Certificates, Identifiers &amp; Profiles&rdquo;中的&rdquo;Certificates&rdquo;那一项。 点击右上角的&rdquo;+&ldquo;按钮，创建新证书。 在&rdquo;Production&rdquo;分类中选择&rdquo;Mac App Store&rdquo;。 在下一步页面中，选择&rdquo;Mac App Distribution&rdquo;。 在下一步页面中，选择&rdquo;AppCertificateSigningRequest.certSigningRequest&rdquo;文件。 点击&rdquo;Generate&rdquo;来生成证书（证书文件名默认为&rdquo;mac_app.cer&rdquo;）。 重复1-7步，在第5步选择&rdquo;Mac Installer Distribution&rdquo;，在第六步中上传&rdquo;InstallerCertificateSigningRequest.certSigningRequest&rdquo;文件。这里第7步生成的证书的默认文件名是&rdquo;mac_installer.cer&rdquo;。  导入证书 分别双击导入&rdquo;mac_app.cer&rdquo;与&rdquo;mac_installer.cer&rdquo;，导入的时候选择“login”来导入当前用户的钥匙链中。导入之后最好通过名字过滤搜索，确认导入成功。
+应用签名 有了证书之后就可以对之前生成的&rdquo;.app&rdquo;文件签名了。命令如下：
+codesign -f -s &quot;3rd Party Mac Developer Application: XXX&quot; --entitlements “YYY.entitlements” &quot;ZZZ.app&quot;
+其中&rdquo;3rd Party Mac Developer Application: XXX&rdquo;就是证书中的那个名字，&rdquo;YYY.entitlements&rdquo;就是应用对应的entitlements的路径，&rdquo;ZZZ.app&rdquo;就是之前生成的app文件。
+安装包签名 接着使用productbuild工具来生成安装包，命令如下：
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-07-21-stand-programming/" rel="bookmark">
+			开始站立式编程
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-21T09:45:12">2014-07-21</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/startup" rel="category">startup</a>, <a class="meta__link" href="/categories/health" rel="category">health</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		最开始创立公司的时候我就准备尝试站立式编程，但是因为身高(~186cm)的原因，很难找到合适的桌子，我们甚至买了一个简单的吧台高桌，但是仍然不够高。
+后来因为颈椎不舒服等原因吧，这件事又提上了议程。因为没有足够高的桌子，所以只能靠外设笔记本支架来补充了，我是在京东上挑选了这个支架。选择这个的时候我主要关注最大高度，稳定性以及可调节性，刚刚提到的那个支架这三点看上去都不错。
+下单之后足足等了一个星期才到，到了之后有一点硬件问题，不过影响不是很大，而且售后的态度也非常不错。在简单组装之后，就可以很好的满足我的要求了。
+正面：
+背面：
+真人版：
+早上装好之后工作了3个小时左右，支架稍微有点抖动（因为我没用外接键盘），但支点比较稳固，可以接受；腿还是有点儿累，而且不断的出汗（正面照里面可以看到我准备的擦汗毛巾），中间休息了10分钟左右，身体感觉还行；工作效率方面，感觉比坐着的时候稍微有一点差距，但影响不大。等我再试用一段时间再来聊聊看吧。
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/" rel="bookmark">
+			跟郭总学开发（1）——Mac应用使用OpenCV的问题与解决方案
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-16T09:34:09">2014-07-16</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/learn" rel="category">learn</a>, <a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a>, <a class="meta__link" href="/categories/framework" rel="category">framework</a>, <a class="meta__link" href="/categories/static-lib" rel="category">static-lib</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		最近有机会跟郭总合作开发一些项目，真是每天都有新姿势啊，不记录下来都觉得可惜。
+起因 先来描述一下遇到的问题：我们的项目要用到OpenCV，如果是为iOS开发的话，直接编译生成opencv2.framework就可以了，iOS默认将framework静态编译到最终的二进制中，但是在Mac上没有现成的framework framework不会静态编译，仍然要复制到最终的bundle中，这就可能带来问题。
+我是用brew install opencv安装的opencv，没有其他特殊指令，最终是在/usr/local/Cellar/opencv/2.4.9/lib下生成了一堆dylib文件，然后把这些文件放到项目里面，同时选择复制到最终的bundle中。但是这样产生的.app在运行时会有一些路径相关的错误（一般是image not found什么的），直接就崩了。
+这样我们就只能选择用静态链接库了。如果是我来解决这个问题的话，我一定会想办法安装一个生成.a版本的opencv，很有可能会自己编译源代码。
+如果你比较急着用的话，可以直接下载opencv_osx.a.zip。
+郭总说 让我们看看郭总是怎么搞的：
+ 最后是去这下了个 iOS 的 framework 把里面二进制拿出来 去掉了arm http://sourceforge.net/projects/opencvlibrary/files/opencv-ios/
+反正要给 iOS 模拟器就有 x64 i386
+framework里面有个核心的二进制 加个.a后缀 就是 static lib 直接拿过来就行了
+我嫌大 用lipo拆开 去掉了arm的重合了一个
+一共只有3行操作
+ 喂喂，略显高端了吧！
+这里的要点一方面是有的iOS framework因为要支持iOS模拟器，所以会在核心二进制里面包含x64和i386可用的static lib，我们如果有需要可以利用这些生成好的二进制；
+另外一方面就是lipo，如果你跟我一样从来没见过这个命令，赶快去man lipo一下吧！
+实战 接下来我们来实战一下，首先从郭总提供的url里面下载好这个framework，找到这个核心的二进制：
+接下来先看一下这个二进制包含了哪些arch：
+➜ voidmain@MBP ~/Desktop lipo -info opencv2 Architectures in the fat file: opencv2 are: armv7 armv7s i386 x86_64 arm64  正如郭总所说，这里面除了给iOS准备的arm系列外，还包含着i386跟x86_64这两个mac上可用的framework，然后我们就需要剔除arm系列，给这个二进制瘦身一下：
+➜ voidmain@MBP ~/Desktop lipo opencv2 -extract i386 -extract x86_64 -output opencv2_osx.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-07-16-learn-with-prof-g-framework-and-static-lib/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-07-13-nsimage-for-high-dpi-images/" rel="bookmark">
+			NSImage在读取高DPI图像时的bug及解决方案
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-13T20:11:40">2014-07-13</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a>, <a class="meta__link" href="/categories/nsimage" rel="category">NSImage</a>, <a class="meta__link" href="/categories/image" rel="category">image</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？
+比如下面这个图：
+它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。
+NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url]; NSLog(@&quot;before: %@&quot;, NSStringFromSize(srcImage.size));  这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：
+其实要解决这个问题并不是特别困难。尽管NSImage在计算尺寸的时候是按72dpi来计算的，但是NSImage的内部表示NSBitmapImageRep还是有字段保留着图像的实际尺寸，分别是pixelsWide跟pixelsHigh。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：
+- (NSBitmapImageRep *)bitmapImageRepresentation { // NSImage可能包含很多representation，需要迭代一下 NSArray * imageReps = [self representations]; float width = 0; float height = 0; for (NSImageRep * imageRep in imageReps) { // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率 if ([imageRep pixelsWide] &gt; width) width = [imageRep pixelsWide]; if ([imageRep pixelsHigh] &gt; height) height = [imageRep pixelsHigh]; } if(width &lt; 1 || height &lt; 1) return nil; // 重新绘制 NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL pixelsWide: width pixelsHigh: height bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar: NO colorSpaceName: NSDeviceRGBColorSpace bytesPerRow: 0 bitsPerPixel: 0]; NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep]; [NSGraphicsContext saveGraphicsState]; [NSGraphicsContext setCurrentContext: ctx]; // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height)) [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-07-13-nsimage-for-high-dpi-images/">Read more…</a>
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-07-13-my-daily-timetable/" rel="bookmark">
+			我的工作时间表
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-13T07:03:41">2014-07-13</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/startup" rel="category">startup</a>, <a class="meta__link" href="/categories/timetable" rel="category">timetable</a>, <a class="meta__link" href="/categories/schedule" rel="category">schedule</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		对于创业者来说，保持每天精力充沛十分重要，因此良好和稳定的作息习惯是必不可少的。本文就来分享一下我每天的工作、休息时间。
+其实最开始我的时间表不是现在这样，大致说来就是晚上12点－1点睡觉，早上8点起床，中午有2个小时的午休。后来因为合伙人租的房子附近每天早上6点开始施工，我们就把时间表前移了两个小时：
+ 6:10 起床 6:10 - 6:30 洗漱 6:30 - 7:00 晨练 (注1) 7:00 - 7:10 消消汗，冷静冷静，准备开始工作 7:10 - 11:00 上午工作时间 (注2) 11:00 - 11:40 吃午饭 11:40 - 12:00 午休前随便刷会社交网络＋视频网站 12:00 - 14:00 午休 14:00 - 17:00 下午工作时间 (注3) 17:00 - 18:00 晚饭时间 18:00 - 20:00 自由支配时间 (注4) 20:00 - 21:00 消遣时间 (注5) 21:00 - 22:00 洗澡、给家里打电话 (注6) 22:00 - 23:00 躺在床上刷手机 (注7) 23:00 熄灯睡觉  这个时间表每周会使用6天，因为我已经脱团，所以每周会有一天时间去妹子学校刷脸。这一天仍然会早起、早睡，但是没有午休了。
+注释  晨练会根据北京天气情况，如果是雾霾的话就不晨练了。这一点有待改进，雾霾的话应该改为室内锻炼。一般我的晨练就是跑步＋快走。大概各占15分钟。 上午工作时间是最宝贵的，因为刚睡醒头脑清醒，加上晨练结束比较兴奋，这段时间是生产力最高的时间。一般我会用来看需要研究的论文或者没解决的疑难问题。 因为我的午睡习惯不太好，午睡时间较长，所以下午起床之后刚开始的一段时间比较昏昏沉沉，这段时间我一般会去研究一个比较能刺激大脑的，而且比较有趣的问题，比如如何实现XXXX效果，如何改进XXXX代码等等。 这段时间比较自由，不太确定。有的时候可能晚上出去吃大餐，这段时间都在吃饭；有的时候可能突然有了一个兴趣点，这段时间就拿来做20%项目；每周三晚上是我们公司的&rdquo;Halo Night&rdquo;＋&rdquo;Laundary Night&rdquo;（TBBT粉有没有很耳熟），所以这段时间就去洗衣服＋打Halo；还有的时候我自己直接就用来打游戏了。 这段消遣时间也不是很固定，如果不在消遣可能就在继续写代码。这段消遣时间一般会跟小伙伴一起打打星际什么的，或者看看星际视频。 给家里打电话其实挺重要的，也许并没有什么特别的话题，但是重要的是让父母知道你一切平安。 一般我会先看一集美剧/日剧/日漫，然后听《网易轻松一刻语音版》或者《网易轻松一刻新闻七点整》，然后慢慢入睡。  可以改进的地方 我觉得最需要改进的就是戒掉躺在床上刷手机这个环节，改称做仰卧起坐/俯卧撑之类的比较好。但是手机中毒过深，慢慢戒吧。
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-07-01-integrating-swift-with-c-plus-plus/" rel="bookmark">
+			在Swift代码中整合C&#43;&#43;类库
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-07-01T20:39:34">2014-07-01</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/swift" rel="category">swift</a>, <a class="meta__link" href="/categories/cpp" rel="category">cpp</a>, <a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a>, <a class="meta__link" href="/categories/app" rel="category">app</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		最近想用Swift开发一些小玩具，其中一个应用需要用到Box2d这个物理引擎，所以就遇到了如何将C++代码与Swift代码整合的问题。
+在项目中整合Box2d并不困难，可以直接在Podfile里面添加pod 'box2d'，比较麻烦的是怎么在代码中使用。
+在WWDC的Session 406: Integrating Swift with Objective-C中，Apple只是介绍了怎么将Swift代码跟Objective-C代码做整合，但是没有提C++，后来在官方文档中看到了这样一段话：
+ You cannot import C++ code directly into Swift. Instead, create an Objective-C or C wrapper for C++ code.
+ 这就很简单了，首先我们需要创建一个ObjC的类，用类创建向导很容易就能完成这个工作：
+在创建过程中Xcode会提示是否需要创建bridge，选择创建就好了。
+接下来就可以编辑XXXX-Bridging-Header.h这个文件了，根据我的需要，这里应该#import &lt;Box2d/Box2d.h&gt;，所以我就直接把这句话放到bridging header里面了，编译，BOOM!
+ &lt;unknown&gt;:0: error: /path/to/project/Pods/Headers/Box2D/Common/b2Settings.h:22: &lsquo;cassert&rsquo; file not found
+ 如果google这个问题的话，可以看到各种答案都是说应该把.m文件替换成.mm文件，但是我现在压根没用上我刚刚创建的VMBox2dWrapper.m，这就是问题所在。这里需要做2个修改，一个是把VMBox2dWrapper.m的后缀替换成.mm，另外一个是把#import &lt;Box2d/Box2d.h&gt;移动到这个.mm文件里面，而XXXX-Bridging-Header.h这个文件里面#import &quot;VMBox2dWrapper.h&quot;。经过这两个改动以后，就可以顺利编译了。
+还有一个问题是这个Wrapper类里面写什么，基本就是看项目需要用到什么再添加什么方法了，因为我的项目才刚刚开始，如果后续有什么需要注意的地方再来添加。
+	</div>
+</article><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-06-04-learning-swift-1/" rel="bookmark">
+			使用Swift(1)
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-06-04T08:04:36">2014-06-04</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/swiftapple" rel="category">swiftapple</a>, <a class="meta__link" href="/categories/osx" rel="category">osx</a>, <a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		序言 Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本官方Guide，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。
+当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考Using Swift with Cocoa and Objective-C这篇文档。
+另外，Swift刚刚推出一天就已经有开发者用它开发了FlappyBird，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！
+PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。
+环境要求 要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。
+代码 本文中使用道德测试代码都可以在SwiftWithCocoa这个repo中找到，大部分代码都在MyPlayground中。
+“变量”不变 第一次接触这个概念是在了解Scala的时候，Scala中有两个关键字，分别是val和var，用var声明的变量跟其他语言中的一样，可以改变值，但是val声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。
+Swift也提供了类似的声明方法，分别是let和var，用let声明的是常量，用var声明的是变量。
+基本数据类型 Tuple Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。
+// Returning from func func response() -&gt; (Int, String) { return (404, &quot;Not Found&quot;) } var code: Int, description: String (code, description) = response() // code == 404 // description == &quot;Not Found&quot;  我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：
+// Swapping vars var first = 1 var second = 2 // Change 2 to &quot;ASDF&quot; and see the error (first, second) = (second, first) // first == 2 // second == 1  需要注意的是，因为Swift强调的是类型安全，所以上面例子中的first和second必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-06-04-learning-swift-1/">Read more…</a>
+	</div>
+</article>
+</main>
+
+<div class="pagination">
+	<span class="pagination__item pagination__item--current">1/2</span>
+	<a class="pagination__item pagination__item--next btn" href="/posts/page/2/">»</a>
+</div>
+
+
+			</div>
+			
+<aside class="sidebar sidebar--left"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="http://blog.voidmain.guru/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/2017-10-03-http-status-405vs501/">HTTP状态码——405 vs 501</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-06-09-stroke-animation-in-action/">实战stroke动画</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-02-27-thoughts-on-functional-programming/">函数式编程随想（一）——函数式编程的好处及柯里化的意义</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/">帮他人提交Mac应用</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-07-21-stand-programming/">开始站立式编程</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/android">Android</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/animator">Animator</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/app">App</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/appstore">Appstore</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cocoa">Cocoa</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cpp">Cpp</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/developer">Developer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/dota">Dota</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/fragment">Fragment</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/framework">Framework</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/functional-programming">Functional programming</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/gamer">Gamer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/health">Health</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/http">Http</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/image">Image</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/ios">Ios</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/leadership">Leadership</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learn">Learn</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learning">Learning</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/mac">Mac</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/node-webkit">Node webkit</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/nsimage">Nsimage</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/osx">Osx</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/protocol">Protocol</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sc2">Sc2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/schedule">Schedule</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sqlite3">Sqlite3</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startcraft2">Startcraft2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startup">Startup</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/static-lib">Static lib</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swift">Swift</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swiftapple">Swiftapple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/timetable">Timetable</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%8a%a8%e7%94%bb">动画</a></li>
+		</ul>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

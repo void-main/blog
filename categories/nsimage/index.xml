@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>NSImage on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/nsimage/</link>
+    <description>Recent content in NSImage on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sun, 13 Jul 2014 20:11:40 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/nsimage/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>NSImage在读取高DPI图像时的bug及解决方案</title>
+      <link>http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/</link>
+      <pubDate>Sun, 13 Jul 2014 20:11:40 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2014-07-13-nsimage-for-high-dpi-images/</guid>
+      <description>这可能是所有用NSImage的开发者都会遇到的一个坑：为什么我的图像用NSImage打开之后变小了？
+比如下面这个图：
+它的分辨率是2848x4288，但是，如果我用下面的代码打印出来的话，大小却只有854.4x1286.4。
+NSImage *srcImage = [[NSImage alloc] initWithContentsOfURL:url]; NSLog(@&amp;quot;before: %@&amp;quot;, NSStringFromSize(srcImage.size));  这段代码看起来已经简洁的不能再简洁了吧，应该没有问题才对啊。但是实际问题出现在DPI这里。NSImage的size计算是按照DPI为72的值计算的，做个简单的实验，如果用Photoshop打开刚刚这幅图，然后用Image Size工具将DPI调成72（保持各种比例关系不变），就能看到这个854.4怎么来的了：
+其实要解决这个问题并不是特别困难。尽管NSImage在计算尺寸的时候是按72dpi来计算的，但是NSImage的内部表示NSBitmapImageRep还是有字段保留着图像的实际尺寸，分别是pixelsWide跟pixelsHigh。因此只要利用这两个实际大小来计算，或者干脆中心绘制一下这个NSImage就可以了。核心代码如下：
+- (NSBitmapImageRep *)bitmapImageRepresentation { // NSImage可能包含很多representation，需要迭代一下 NSArray * imageReps = [self representations]; float width = 0; float height = 0; for (NSImageRep * imageRep in imageReps) { // 利用pixelsWide跟pixelsHigh来获得实际图像分辨率 if ([imageRep pixelsWide] &amp;gt; width) width = [imageRep pixelsWide]; if ([imageRep pixelsHigh] &amp;gt; height) height = [imageRep pixelsHigh]; } if(width &amp;lt; 1 || height &amp;lt; 1) return nil; // 重新绘制 NSBitmapImageRep *rep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL pixelsWide: width pixelsHigh: height bitsPerSample: 8 samplesPerPixel: 4 hasAlpha: YES isPlanar: NO colorSpaceName: NSDeviceRGBColorSpace bytesPerRow: 0 bitsPerPixel: 0]; NSGraphicsContext *ctx = [NSGraphicsContext graphicsContextWithBitmapImageRep: rep]; [NSGraphicsContext saveGraphicsState]; [NSGraphicsContext setCurrentContext: ctx]; // 实际绘制代码，把全部图像(fromRect: NSZeroRect)画到全尺寸的矩形中(drawInRect:NSMakeRect(0, 0, width, height)) [self drawInRect:NSMakeRect(0, 0, width, height) fromRect:NSZeroRect operation:NSCompositeCopy fraction:1.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>动画 - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="动画" />
+<meta property="og:description" content="This is a blog site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://blog.voidmain.guru/categories/%E5%8A%A8%E7%94%BB/" />
+
+<meta property="og:updated_time" content="2016-06-09T12:14:57+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="动画"/>
+<meta name="twitter:description" content="This is a blog site."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/categories/%E5%8A%A8%E7%94%BB/index.xml" title="VoidMain's Blog">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">动画</h1>
+	</header><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2016-06-09-stroke-animation-in-action/" rel="bookmark">
+			实战stroke动画
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2016-06-09T12:14:57">2016-06-09</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/%e5%8a%a8%e7%94%bb" rel="category">动画</a>, <a class="meta__link" href="/categories/ios" rel="category">iOS</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		iOS支持对许多属性进行动画操作，比如center，rotation等等。其中有两个属性常常被人忽略，但又能做出很有趣的效果，那就是strokeStart与strokeEnd。最近在做一个小东西的时候想要用动画在搜索图标与返回图表之间切换，效果如下：
+具体是如何实现的，且容我慢慢说来。
+设计动画 在具体做之前首先需要设计如何让这两个图标可以较为自然的切换。首先我们来分析下返回图标，
+如下图：
+返回图标非常简单，就是三根线，分别标记为1-3。然后分析下放大镜图标，如下图：
+如果我们按照放大镜手柄做一根延长线，恰好也可以把放大镜可以分为三部分，上下半圆（1，2）和放大镜手柄（3）。
+所以我就让两个半圆“变形”成两个返回按钮，同时为了增加不同类型的动画，我决定让放大镜的手柄旋转一下，具体效果如下图：
+放大镜的两个半圆在缩小的同时，返回图标的两条线在生长，同时放大镜的手柄向上摆动，看起来就像放大镜变形成了返回键。
+让我们一起来看一个慢速版本，这样可以比较直观的理解动画过程。
+定义状态 根据上面的分析可以看出这个动画有两个状态，分别是放大镜状态和返回键状态。可以用一个枚举来表示两个状态：
+enum AnimationState { case Magnifier case Back func nextState() -&gt; AnimationState { return self == .Magnifier ? .Back : .Magnifier } }  这里我增加了一个nextState方法，主要用来计算下一个状态是什么，逻辑也非常简单，如果是放大镜，下一个状态就是返回；如果是返回，下一个状态就是放大镜。
+创建形状图层 那我们怎么表示圆形和直线呢？答案就是用UIBezierPath。UIBezierPath定义了许多形状绘制的方法，包括圆弧和直线。创建形状的代码非常简单，但是在创建之前我们需要一个“容器”来展示定义好的曲线，这就需要用到CAShapeLayer：
+func setupCircleLayer(layer: CAShapeLayer, center: CGPoint, radius: CGFloat, startAngle: CGFloat, endAngle: CGFloat, strokeStart: CGFloat = 0, strokeEnd: CGFloat = 1, lineWidth: CGFloat = magnifierLineWidth, strokeColor: CGColor = magnifierColor) { layer.path = UIBezierPath(arcCenter: center, radius: radius, startAngle: startAngle, endAngle: endAngle, clockwise: true).
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2016-06-09-stroke-animation-in-action/">Read more…</a>
+	</div>
+</article>
+</main>
+
+
+			</div>
+			
+<aside class="sidebar sidebar--left"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="http://blog.voidmain.guru/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/2017-10-03-http-status-405vs501/">HTTP状态码——405 vs 501</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-06-09-stroke-animation-in-action/">实战stroke动画</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-02-27-thoughts-on-functional-programming/">函数式编程随想（一）——函数式编程的好处及柯里化的意义</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/">帮他人提交Mac应用</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-07-21-stand-programming/">开始站立式编程</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/android">Android</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/animator">Animator</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/app">App</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/appstore">Appstore</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cocoa">Cocoa</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cpp">Cpp</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/developer">Developer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/dota">Dota</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/fragment">Fragment</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/framework">Framework</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/functional-programming">Functional programming</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/gamer">Gamer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/health">Health</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/http">Http</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/image">Image</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/ios">Ios</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/leadership">Leadership</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learn">Learn</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learning">Learning</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/mac">Mac</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/node-webkit">Node webkit</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/nsimage">Nsimage</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/osx">Osx</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/protocol">Protocol</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sc2">Sc2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/schedule">Schedule</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sqlite3">Sqlite3</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startcraft2">Startcraft2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startup">Startup</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/static-lib">Static lib</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swift">Swift</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swiftapple">Swiftapple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/timetable">Timetable</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%8a%a8%e7%94%bb">动画</a></li>
+		</ul>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

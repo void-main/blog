@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>使用Swift(1) - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="使用Swift(1)" />
+<meta property="og:description" content="序言 Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本官方Guide，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。
+当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考Using Swift with Cocoa and Objective-C这篇文档。
+另外，Swift刚刚推出一天就已经有开发者用它开发了FlappyBird，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！
+PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。
+环境要求 要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。
+代码 本文中使用道德测试代码都可以在SwiftWithCocoa这个repo中找到，大部分代码都在MyPlayground中。
+“变量”不变 第一次接触这个概念是在了解Scala的时候，Scala中有两个关键字，分别是val和var，用var声明的变量跟其他语言中的一样，可以改变值，但是val声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。
+Swift也提供了类似的声明方法，分别是let和var，用let声明的是常量，用var声明的是变量。
+基本数据类型 Tuple Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。
+// Returning from func func response() -&gt; (Int, String) { return (404, &quot;Not Found&quot;) } var code: Int, description: String (code, description) = response() // code == 404 // description == &quot;Not Found&quot;  我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：
+// Swapping vars var first = 1 var second = 2 // Change 2 to &quot;ASDF&quot; and see the error (first, second) = (second, first) // first == 2 // second == 1  需要注意的是，因为Swift强调的是类型安全，所以上面例子中的first和second必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2014-06-04-learning-swift-1/" />
+<meta property="article:published_time" content="2014-06-04T08:04:36+08:00" />
+<meta property="article:modified_time" content="2014-06-04T08:04:36+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用Swift(1)"/>
+<meta name="twitter:description" content="序言 Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本官方Guide，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。
+当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考Using Swift with Cocoa and Objective-C这篇文档。
+另外，Swift刚刚推出一天就已经有开发者用它开发了FlappyBird，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！
+PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。
+环境要求 要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。
+代码 本文中使用道德测试代码都可以在SwiftWithCocoa这个repo中找到，大部分代码都在MyPlayground中。
+“变量”不变 第一次接触这个概念是在了解Scala的时候，Scala中有两个关键字，分别是val和var，用var声明的变量跟其他语言中的一样，可以改变值，但是val声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。
+Swift也提供了类似的声明方法，分别是let和var，用let声明的是常量，用var声明的是变量。
+基本数据类型 Tuple Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。
+// Returning from func func response() -&gt; (Int, String) { return (404, &quot;Not Found&quot;) } var code: Int, description: String (code, description) = response() // code == 404 // description == &quot;Not Found&quot;  我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：
+// Swapping vars var first = 1 var second = 2 // Change 2 to &quot;ASDF&quot; and see the error (first, second) = (second, first) // first == 2 // second == 1  需要注意的是，因为Swift强调的是类型安全，所以上面例子中的first和second必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。"/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">使用Swift(1)</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-06-04T08:04:36">2014-06-04</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/swiftapple" rel="category">swiftapple</a>, <a class="meta__link" href="/categories/osx" rel="category">osx</a>, <a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#序言">序言</a></li>
+<li><a href="#环境要求">环境要求</a></li>
+<li><a href="#代码">代码</a></li>
+<li><a href="#变量-不变">“变量”不变</a></li>
+<li><a href="#基本数据类型">基本数据类型</a>
+<ul>
+<li><a href="#tuple">Tuple</a></li>
+<li><a href="#类型推断-inference-与optionals">类型推断(Inference)与Optionals</a>
+<ul>
+<li><a href="#optionals">Optionals</a></li>
+</ul></li>
+<li><a href="#语法糖-trailing-closure-syntax">语法糖 - Trailing closure syntax</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+<h2 id="序言">序言</h2>
+
+<p>Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本<a href="https://itunes.apple.com/us/book/swift-programming-language/id881256329?mt=11">官方Guide</a>，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。</p>
+
+<p>当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考<a href="https://developer.apple.com/library/prerelease/ios/documentation/swift/conceptual/buildingcocoaapps/index.html#//apple_ref/doc/uid/TP40014216-CH2-XID_0">Using Swift with Cocoa and Objective-C</a>这篇文档。</p>
+
+<p>另外，Swift刚刚推出一天就已经有开发者用它开发了<a href="https://github.com/fullstackio/FlappySwift">FlappyBird</a>，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！</p>
+
+<p>PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。<b>另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。</b></p>
+
+<h2 id="环境要求">环境要求</h2>
+
+<p>要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。</p>
+
+<h2 id="代码">代码</h2>
+
+<p>本文中使用道德测试代码都可以在<a href="https://github.com/void-main/SwiftWithCocoa">SwiftWithCocoa</a>这个repo中找到，大部分代码都在<code>MyPlayground</code>中。</p>
+
+<h2 id="变量-不变">“变量”不变</h2>
+
+<p>第一次接触这个概念是在了解Scala的时候，<code>Scala</code>中有两个关键字，分别是<code>val</code>和<code>var</code>，用<code>var</code>声明的变量跟其他语言中的一样，可以改变值，但是<code>val</code>声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。</p>
+
+<p>Swift也提供了类似的声明方法，分别是<code>let</code>和<code>var</code>，用<code>let</code>声明的是常量，用<code>var</code>声明的是变量。</p>
+
+<h2 id="基本数据类型">基本数据类型</h2>
+
+<h3 id="tuple">Tuple</h3>
+
+<p>Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。</p>
+
+<pre><code class="language-objc">// Returning from func
+func response() -&gt; (Int, String) {
+    return (404, &quot;Not Found&quot;)
+}
+var code: Int, description: String
+(code, description) = response()
+// code == 404
+// description == &quot;Not Found&quot;
+</code></pre>
+
+<p>我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：</p>
+
+<pre><code class="language-objc">// Swapping vars
+var first = 1
+var second = 2 // Change 2 to &quot;ASDF&quot; and see the error
+(first, second) = (second, first)
+// first == 2
+// second == 1
+</code></pre>
+
+<p>需要注意的是，因为Swift强调的是类型安全，所以上面例子中的<code>first</code>和<code>second</code>必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。</p>
+
+<p>总而言之有了tuple之后，用Swift传递和处理数据将变得非常灵活。</p>
+
+<h3 id="类型推断-inference-与optionals">类型推断(Inference)与Optionals</h3>
+
+<p>Swift自夸的一个特性就是类型安全，变量声明（或第一次赋值）之后，编译器会根据开发者显式指定（<code>let num: Int</code>）或者隐式赋值推断（<code>let num = 1</code>）得到变量类型，一旦确定，之后就不能改变类型了，例如：</p>
+
+<pre><code class="language-objc">var num = 1
+num = &quot;123&quot; // Error!
+</code></pre>
+
+<p>第二行就会报错，因为num已经被编译器推测为Int类型了，所以再赋值为String就会出错，所以上面才提到的，使用tuple赋值的时候两种类型必须一致。为了解决这个问题，我们可以用强制类型转型：</p>
+
+<pre><code class="language-objc">// Explict type conversion and unwarp
+first = 1
+var third = &quot;123&quot;
+(first, third) = (third.toInt()!, String(first))
+first
+second
+</code></pre>
+
+<p>上面的例子中，就是把<code>third:String</code>利用<code>toInt()</code>强制转换成了<code>Int</code>，这样<code>first:Int</code>就能接受了。下面我们重点说一下<code>toInt()!</code>最后的这个<code>!</code>。</p>
+
+<h4 id="optionals">Optionals</h4>
+
+<p>Optionals实际是一种类型，这种类型就是在原有类型的后面加上一个大大的<code>?</code>。对于Cocoa开发者来说，这种变化应该并不陌生，因为Objective-C里面的<code>SEL</code>类型，<code>:</code>也是类型的一部分，比如<code>gotNotification</code>跟<code>gotNotification:</code>就是两个<code>SEL</code>对象。</p>
+
+<p>如果说一个变量的类型是<code>XX?</code>，那么代表的意思是，要么这个变量有值，且类型为<code>XX</code>，要么这个变量没有值。这个类型主要用在可能会出错的时候，例如将字符串转换为数字，可能字符串根本代表的不是数字，对于这种情况有的语言选择抛出运行时异常，Swift则选择了返回一个值为空的optionals对象。在Swift的代码框架中，大量系统级的API返回的都是optionals对象。</p>
+
+<p>但是如何使用<code>XX?</code>的值呢，或者说如何将<code>XX?</code>转换为<code>XX</code>呢？这就要用到<code>!</code>了。所以上一节中说到的<code>third.toInt()!</code>实际过程是<code>&quot;123&quot;</code>这个<code>String</code>类型的变量通过<code>toInt()</code>转换为了<code>Int?</code>，但是咱们的<code>first</code>对象类型为<code>Int</code>，所以需要将<code>Int?</code>通过<code>!</code>转换为<code>Int</code>。这下整个过程就清楚了。</p>
+
+<p>另外optionals还常用在if判断中，可以通过<code>if let</code>来避免使用<code>!</code>：</p>
+
+<pre><code class="language-objc">var text:String? = &quot;123&quot;
+if let v = text {
+    println(v)
+}
+</code></pre>
+
+<p>最后值得一提的是隐式optionals对象，就是在定义的时候使用<code>!</code>而不是<code>?</code>，这样的好处是系统可以自动将<code>XX?</code>转换为<code>XX</code>对象了。</p>
+
+<p>基于optionals还有更多神奇的语法糖，比如Craig在Keynote里面展示的那段代码，我们以后再分析。</p>
+
+<h3 id="语法糖-trailing-closure-syntax">语法糖 - Trailing closure syntax</h3>
+
+<p>本来准备再下篇博客中再分析closure，但是有一个语法感觉可以提前说明一下，就是<code>Trailing closure syntax</code>。在Objective-C中，大家都非常熟悉block的使用了，基本上很多常用的API都提供了block方式，比如<code>NSBlockOperation</code>：</p>
+
+<pre><code class="language-objc">NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+NSBlockOperation *blockOperation = [NSBlockOperation blockOperationWithBlock:{
+    NSLog(@&quot;Got block!&quot;);
+}];
+[queue addOperation:blockOperation];
+</code></pre>
+
+<p>如果直接对应过来的话，应该写成：</p>
+
+<pre><code class="language-objc">let operationQ = NSOperationQueue()
+let operation = NSBlockOperation(block: {
+    println(&quot;Got operation!&quot;)
+})
+operationQ.addOperation(operation)
+</code></pre>
+
+<p>对于这种最后一个参数接受closure的情况，可以将最后一个参数移到调用括号的外面，看起来就像定义了一个block一样：</p>
+
+<pre><code class="language-objc">let operation = NSBlockOperation() {
+    println(&quot;Got operation!&quot;)
+}
+operationQ.addOperation(operation)
+</code></pre>
+
+<p>这样写起来不仅省了代码，而且看上去也比较舒服了。</p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">在node-webkit中使用sqlite3</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2014-07-01-integrating-swift-with-c-plus-plus/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">在Swift代码中整合C&#43;&#43;类库</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

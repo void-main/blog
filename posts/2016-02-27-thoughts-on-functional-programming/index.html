@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>函数式编程随想（一）——函数式编程的好处及柯里化的意义 - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="函数式编程随想（一）——函数式编程的好处及柯里化的意义" />
+<meta property="og:description" content="这篇博客主要是为了记录我最近关于函数式编程的好处，以及柯里化的作用的一些思考。
+首先来举个简单的例子，如果我们有一组数，比如[1,2,3,4,5,6]，我们想取其中的奇数，然后把这些奇数取平方，并返回这个数组，即，我们期望的结果是[1,9,25]，那么应该怎么写呢？
+最简单的写法就是来一次循环：
+list = [1, 2, 3, 4, 5, 6]; result = []; for(idx = 0; idx &lt; list.length; idx &#43;&#43;) { if (list[idx] % 2 == 1) { result = result.concat(list[idx] * list[idx]); } } console.log(result); // [1, 9, 25]  真的，我劝你不要这么写。
+ “为什么不？课本上都是这么写的啊！”
+ 这么写确实正确，而且符合需求，但是看看我们做了多少额外的工作！我们不仅需要描述具体的业务逻辑(list[idx] % 2 == 1和list[idx] * list[idx])，还要操心如何遍历每个元素(for循环)、如何取出当前要处理的值(维护idx变量，以及用list[idx]来取值)，以及如何保存结果。
+对于这么一个简单的任务我们几乎在基础工作上用了一半以上的代码，代价太高了。
+有没有简单的写法呢？有啊！
+// JS code list = [1, 2, 3, 4, 5, 6]; result = list.filter((x) =&gt; x % 2)." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2016-02-27-thoughts-on-functional-programming/" />
+<meta property="article:published_time" content="2016-02-27T15:17:43+08:00" />
+<meta property="article:modified_time" content="2016-02-27T15:17:43+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="函数式编程随想（一）——函数式编程的好处及柯里化的意义"/>
+<meta name="twitter:description" content="这篇博客主要是为了记录我最近关于函数式编程的好处，以及柯里化的作用的一些思考。
+首先来举个简单的例子，如果我们有一组数，比如[1,2,3,4,5,6]，我们想取其中的奇数，然后把这些奇数取平方，并返回这个数组，即，我们期望的结果是[1,9,25]，那么应该怎么写呢？
+最简单的写法就是来一次循环：
+list = [1, 2, 3, 4, 5, 6]; result = []; for(idx = 0; idx &lt; list.length; idx &#43;&#43;) { if (list[idx] % 2 == 1) { result = result.concat(list[idx] * list[idx]); } } console.log(result); // [1, 9, 25]  真的，我劝你不要这么写。
+ “为什么不？课本上都是这么写的啊！”
+ 这么写确实正确，而且符合需求，但是看看我们做了多少额外的工作！我们不仅需要描述具体的业务逻辑(list[idx] % 2 == 1和list[idx] * list[idx])，还要操心如何遍历每个元素(for循环)、如何取出当前要处理的值(维护idx变量，以及用list[idx]来取值)，以及如何保存结果。
+对于这么一个简单的任务我们几乎在基础工作上用了一半以上的代码，代价太高了。
+有没有简单的写法呢？有啊！
+// JS code list = [1, 2, 3, 4, 5, 6]; result = list.filter((x) =&gt; x % 2)."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">函数式编程随想（一）——函数式编程的好处及柯里化的意义</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2016-02-27T15:17:43">2016-02-27</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/functional-programming" rel="category">functional programming</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>这篇博客主要是为了记录我最近关于函数式编程的好处，以及柯里化的作用的一些思考。</p>
+
+<p>首先来举个简单的例子，如果我们有一组数，比如<code>[1,2,3,4,5,6]</code>，我们想取其中的奇数，然后把这些奇数取平方，并返回这个数组，即，我们期望的结果是<code>[1,9,25]</code>，那么应该怎么写呢？</p>
+
+<p>最简单的写法就是来一次循环：</p>
+
+<pre><code class="language-javascript">list = [1, 2, 3, 4, 5, 6];
+result = [];
+for(idx = 0; idx &lt; list.length; idx ++) {
+    if (list[idx] % 2 == 1) {
+        result = result.concat(list[idx] * list[idx]);
+    }
+}
+
+console.log(result);
+// [1, 9, 25]
+</code></pre>
+
+<p>真的，我劝你不要这么写。</p>
+
+<blockquote>
+<p>“为什么不？课本上都是这么写的啊！”</p>
+</blockquote>
+
+<p>这么写确实正确，而且符合需求，但是看看我们做了多少额外的工作！我们不仅需要描述具体的业务逻辑(<code>list[idx] % 2 == 1</code>和<code>list[idx] * list[idx]</code>)，还要操心如何遍历每个元素(<code>for</code>循环)、如何取出当前要处理的值(维护<code>idx</code>变量，以及用<code>list[idx]</code>来取值)，以及如何保存结果。</p>
+
+<p>对于这么一个简单的任务我们几乎在基础工作上用了一半以上的代码，代价太高了。</p>
+
+<p>有没有简单的写法呢？有啊！</p>
+
+<pre><code class="language-javascript">// JS code
+list = [1, 2, 3, 4, 5, 6];
+result = list.filter((x) =&gt; x % 2).map((x) =&gt; x * x);
+console.log(result);
+// [1, 9, 25]
+</code></pre>
+
+<p>仔细观察这种写法。首先，这种写法只描述了要做什么，分别是过滤能被2整除的数和对每个数取平方。第二点就是我们不关心具体的实现，而是通过<strong>函数调用</strong>的方式来解决问题。</p>
+
+<p>这就是函数式编程，全文完。</p>
+
+<hr />
+
+<blockquote>
+<p>“别开玩笑了，函数调用的方式是什么鬼？”</p>
+</blockquote>
+
+<p>注意看，这里我们没有描述如何遍历这个数组，我们只是调用了<code>filter</code>和<code>map</code>两个函数。所以我们没有关心如何一步步实现循环，记录结果，我们知道<code>filter</code>和<code>map</code>函数可以帮我们便利数组，同时对每个元素给我们执行一段代码的机会。</p>
+
+<p>有趣的是这两个函数的参数。以<code>map</code>函数为例，这个函数的第一个参数是一个接受3个参数的函数。没错，这种函数就是所谓的<strong>高阶函数</strong>。</p>
+
+<p>高阶函数可以把函数当作参数，或者可以返回函数作为返回值。</p>
+
+<p>正因为有了这种能力，我们才能把逻辑从循环的具体实现中<strong>抽象</strong>出来，才能使像<code>filter</code>和<code>map</code>这样的函数给调用方执行代码的机会。</p>
+
+<blockquote>
+<p>“但是你说有三个参数？”</p>
+</blockquote>
+
+<p>没错，filter函数在调用它的参数的时候会传递3个参数，但是在我们调用它的时候，却只接受了一个参数，剩下的两个参数被丢掉了。</p>
+
+<blockquote>
+<p>“调用时传递过多的参数会被丢掉，那么参数如果不够呢？”</p>
+</blockquote>
+
+<p>在JS里面会自动传<code>undefined</code>作为参数，这一点稍后会用到。</p>
+
+<p>现在让我们开始时的例子。现在，如果我们要给<code>[7,8,9,10,11,12,13]</code>这个数组也执行同样的操作，为了避免复制、粘贴代码，我们可以通过<strong>函数</strong>进行<strong>抽象</strong>。做法也很简单，把之前代码里面的<code>list</code>变量作为参数传入一个函数，然后两次调用这个函数。就像这样：</p>
+
+<pre><code class="language-javascript">function filterAndMap(data) {
+    return data.filter((x) =&gt; x % 2).map((x) =&gt; x * x);
+}
+console.log(filterAndMap([1, 2, 3, 4, 5, 6]));
+console.log(filterAndMap([7,8,9,10,11,12,13]));
+</code></pre>
+
+<p>但是这里的业务太具体了，如果后面我们想对所有的偶数做取平方的操作，或者对所有的奇数取立方操作，那这个代码显然不能满足。</p>
+
+<blockquote>
+<p>“等等，不是可以把函数当作参数？”</p>
+</blockquote>
+
+<p>对！所以我们可以改一下<code>filterAndMap</code>方法，把具体的逻辑函数当作参数。同时考虑到我们会多次调用<code>filterAndMap</code>方法，为了避免每次调用都定义一次逻辑函数，所以顺便也提前定义这两个函数，分别是判断奇偶以及取平方：</p>
+
+<pre><code class="language-javascript">function odd(x) { return x % 2; }
+function sqr(x) { return x * x; }
+
+function filterAndMap(data, callback1, callback2) {
+    return data.filter(callback1).map(callback2);
+}
+console.log(filterAndMap([1, 2, 3, 4, 5, 6], odd, sqr));
+console.log(filterAndMap([7,8,9,10,11,12,13], odd, sqr));
+</code></pre>
+
+<p>但是，这也太挫了。我怎么知道第二个参数传<code>odd</code>而不是<code>sqr</code>？另外，我必须每次在调用的时候传递逻辑代码，而不是一次创建好，在更新数据的时候还必须附加上额外的参数。</p>
+
+<p>显然我们还有更好的做法。上面这种写法的主要问题是我们不能<strong>提前配置</strong>过滤和映射函数。至于具体原因，让我们再来观察下<code>filter</code>跟<code>map</code>这两个函数：</p>
+
+<pre><code class="language-javascript">array.filter(callback)
+array.map(callback)
+</code></pre>
+
+<p>这两个函数其实是<code>Array.prototype</code>定义的属性，所以我们的数组都可以调用。但是在调用的时候，前提是数组已经存在了，所以必须得先有数组，然后每个数组传一次参数。</p>
+
+<p>不过这个是可以解决的，利用<strong>延迟执行</strong>。让我们先定义两个对应的函数，不过这一次，把<code>array</code>改成函数的参数。</p>
+
+<pre><code class="language-javascript">function filter(callback, array) { return array.filter(callback); }
+function map(callback, array) { return array.map(callback); }
+</code></pre>
+
+<p>可以看到，这两个函数跟原来版本的区别是，我们把原来的数组当作了参数。</p>
+
+<p><strong>特别注意：</strong>这里的参数顺序是有讲究的，推荐把回调函数放倒前面，把数据放倒后面，具体原因后面会讨论。</p>
+
+<p>但是这没有解决问题，因为我们在调用的时候仍然需要提供这两个参数。别着急，如果我们让<code>filter</code>函数变成一个接受<code>callback</code>参数，同时返回一个接受<code>array</code>参数的函数，那情况就不一样了：</p>
+
+<pre><code class="language-javascript">function filter(callback) {
+    return function (array) {
+        return array.filter(callback);
+    }
+}
+
+function map(callback) {
+    return function (array) {
+        return array.map(callback);
+    }
+}
+</code></pre>
+
+<p>这里会涉及到一些关于自由变量、闭包的讨论。我们暂且不提，可以先记住一个原则，就是我们用callback参数调用<code>filter</code>后返回的那个函数的函数体中的<code>callback</code>就是之前传入的那个参数。</p>
+
+<p>好，现在让我们看看怎么用：</p>
+
+<pre><code class="language-javascript">var oddFilter = filter(odd);
+var sqrMap = map(sqr);
+</code></pre>
+
+<p>这里的<code>oddFilter</code>和<code>sqrMap</code>的类型签名都是<code>[Array]-&gt;[Array]</code>，就是接受一个数组作为参数，同时返回一个数组，所以我们可以把这两个函数串联起来：</p>
+
+<pre><code class="language-javascript">function filterAndMap(array) {
+    return sqrMap(oddFilter(array));
+}
+console.log(filterAndMap([1, 2, 3, 4, 5, 6]));
+console.log(filterAndMap([7,8,9,10,11,12,13]));
+</code></pre>
+
+<p>看着不错，一旦我们构建好了大杀器<code>filterAndMap</code>方法，后续就只需要关心数据的变化即可。</p>
+
+<p>那我们对<code>filter</code>和<code>map</code>函数做了什么呢？简单的说，我们实现了可以<strong>部分配置</strong>的<code>filter</code>和<code>map</code>函数。我们可以提前配置好过滤和映射要做的操作，这样就可以在后续不断的更换数据，从而减少代码的复杂程度。同时，创建<code>oddFilter</code>和<code>sqrMap</code>这两个对象的过程叫做<strong>部分调用(partial application)</strong>。</p>
+
+<p>其实将<code>filter</code>这种接受两个参数的函数变成多个没次只接受一个参数的函数的过程就叫柯里化(curry)。单独看柯里化可能觉得并没有什么用，但是如果你想把多个函数进行像刚刚做的这种串联，那就非常关键了。关于柯里化的实现和更多应用后面会讨论。</p>
+
+<blockquote>
+<p>“完美了么？”</p>
+</blockquote>
+
+<p>还没有！这种做法至少还有两个问题，第一个问题，我们的filterAndMap方法，如果我们要串联更多的操作，必须每次都去改这个方法，而且随着嵌套层次的增多，调整会越来越复杂。另外一个问题是，为了实现这个效果，我们的<code>filter</code>和<code>map</code>代码长了好几倍，显然我们不想每次都手撸一遍。</p>
+
+<p>遇到这种问题，我们就得再请<strong>高阶函数</strong>出马做<strong>抽象</strong>啦。</p>
+
+<p>先来说第一个问题，我期待的解决方案是这样的：</p>
+
+<pre><code class="language-javascript">var filterAndMap = pipe(oddFilter, sqrMap);
+console.log(filterAndMap([1, 2, 3, 4, 5, 6]));
+console.log(filterAndMap([7,8,9,10,11,12,13]));
+</code></pre>
+
+<p>这里引入了一个<code>pipe</code>函数，我们马上就要实现它。先看看这种写法的好处是什么。首先，它对调用者来说是扁平的，调用者只需要传入符合要求的函数（函数只接受一个参数，且返回值与参数的类型一致），就可以串联多次，而且要调整顺序也十分简单，只需要改变传入<code>pipe</code>函数的参数的顺序即可，无需处理那一层层的括号。</p>
+
+<p>其实实现<code>pipe</code>函数也很简单，但是需要两点基础知识。</p>
+
+<ol>
+<li>在JavaScript中，每个函数的作用域中都有一个名为arguments的变量，这个变量是实际传入函数的参数对象。这个对象是所谓的*类数组对象*。这个意思是说这个对象有<code>length</code>属性，而且虽然是个对象，但是对象中的key是从0开始的下标。在ES5中可以用<code>Array.prototype.slice</code>函数转换成数组。这样我们就有了实际传入的参数数组。这个数组的元素与函数定义的参数的数量无关。</li>
+<li>对于给定的函数我们可以通过<code>call</code>和<code>apply</code>方法执行。这两者的第一个参数都是this指针，而区别是，<code>apply</code>方法的第二个参数是一个数组，而<code>call</code>方法从第二个参数开始是一个变长参数列表。</li>
+</ol>
+
+<p>考虑<code>pipe</code>函数做的事情：<code>pipe</code>函数的参数是一组函数，这些函数接受一个参数，并返回一个特定的类型。我们只需要对每个参数使用<code>call</code>方法，传入上一个函数执行的结果即可。</p>
+
+<pre><code class="language-javascript">function toArr(args) {
+    return Array.prototype.slice.call(args, 0);
+}
+
+function pipe () {
+    var args = toArr(arguments);
+    return function () {
+        var innerArgs = toArr(arguments);
+        result = void 0; // void 0 =&gt; undefined
+        args.forEach(function (fn, idx) {
+            if (idx == 0) {
+                result = fn.apply(this, innerArgs);
+            } else {
+                result = fn.call(this, result);
+            }
+        });
+
+        return result;
+    }
+}
+</code></pre>
+
+<p>然后我们再来考虑第二个问题，我们不想也不能没次都手撸一次柯里化之后的<code>filter</code>函数。如果一个函数有10个参数，那手撸一次估计就废了。在JS中其实也很好实现，不过还是需要补充一个知识点：</p>
+
+<ol>
+<li>如果一个对象是函数类型，那么它的<code>length</code>方法返回的是函数定义的参数列表的长度。</li>
+</ol>
+
+<p>也就是说，如果要实现<code>curry</code>函数，需要每次接受一部分参数（不一定是一个），只有在总参数的长度大于等于定义的参数长度时，才真正的调用函数，否则就返回一个保存了已经传入参数的函数。实现如下：</p>
+
+<pre><code class="language-javascript">function curry(fn) {
+    var definedArgsCount = fn.length;
+
+    function helper(args) {
+        return function () {
+            var newArgs = toArr(arguments);
+            var wholeArgs = args.concat(newArgs);
+
+            if (wholeArgs.length &gt;= definedArgsCount) {
+                return fn.apply(this, wholeArgs);
+            } else {
+                return helper(wholeArgs);
+            }
+        }
+    }
+
+    return helper([]);
+}
+</code></pre>
+
+<p>到这里关于函数式编程的好处、柯里化的意义的讨论我想说的就都说完了。</p>
+
+<blockquote>
+<p>“那为什么要把callback放前面？”</p>
+</blockquote>
+
+<p>这里又个原则是把容易变化的往后放。加入了柯里化之后，我们可以实现函数的部分配置。那么就应该尽可能把可以配置的参数放倒前面。当然这也与JS的bind机制有关，具体我就不讨论了。而这么做的好处就是，我们可以像前面的例子这样，简单的把多个函数串联起来。</p>
+
+<blockquote>
+<p>“然而我用PHP！”</p>
+</blockquote>
+
+<p>没关系，我简单实现了4个有用的函数，并且<a href="https://github.com/void-main/fn-php">开源</a>啦。</p>
+
+<blockquote>
+<p>“性能啊！”</p>
+</blockquote>
+
+<p>实际上我认为如果不进行像网络和数据库读写这种耗时操作，比起这种写法带来的好处，性能的损耗可以接受。如果真的出现了性能问题，再进行特定的优化也不晚。</p>
+
+<p>##参考资料
+1. <a href="http://jrsinclair.com/articles/2016/gentle-introduction-to-functional-javascript-intro/">http://jrsinclair.com/articles/2016/gentle-introduction-to-functional-javascript-intro/</a>
+2. <a href="https://hughfdjackson.com/javascript/why-curry-helps/">https://hughfdjackson.com/javascript/why-curry-helps/</a></p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">帮他人提交Mac应用</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2016-06-09-stroke-animation-in-action/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">实战stroke动画</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

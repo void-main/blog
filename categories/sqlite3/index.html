@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>sqlite3 - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="sqlite3" />
+<meta property="og:description" content="This is a blog site." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="http://blog.voidmain.guru/categories/sqlite3/" />
+
+<meta property="og:updated_time" content="2014-05-31T15:38:27+00:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="sqlite3"/>
+<meta name="twitter:description" content="This is a blog site."/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="alternate" type="application/rss+xml" href="/categories/sqlite3/index.xml" title="VoidMain's Blog">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main list" role="main">
+	<header class="main__header">
+		<h1 class="main__title">sqlite3</h1>
+	</header><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/" rel="bookmark">
+			在node-webkit中使用sqlite3
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-05-31T15:38:27">2014-05-31</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/node-webkit" rel="category">node-webkit</a>, <a class="meta__link" href="/categories/sqlite3" rel="category">sqlite3</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		这两天在调研使用node-webkit开发Mac应用并且提交到Mac App Store的可能性。这类客户端应用有非常通用的一点就是需要一个本地数据存储功能。根据node-webkit的官方wiki，我觉得最适合的就是所谓的Web SQL Database了，同时文档中也说是使用sqlite3来实现的。因此就需要实现sqlite3与node-webkit的整合。
+为了测试，我直接clone了一个windows版的demo。最开始我的尝试是使用node-webkit 0.9.2版（使用最新版的目的是为了保证node-webkit没有使用一些过时的或者private的api导致MAS审核悲剧）。首先我用npm install sqlite3安装了sqlite3 for node，结束之后运行nw node-webkit-sqlite3-windows-demo，结果提示error：
+Error: Cannot find module '/Users/voidmain/WorkSpace/NodeJS/node-webkit-sqlite3-windows-demo/node_modules/sqlite3/lib/binding/node-v11-darwin-ia32/node_sqlite3.node'  如果直接google这个错误会有人说明使用nw-gyp rebuild --target=&lt;node-webkit-version&gt; --arch=ia32来rebuild一下（如果没有安装nw-gyp的话需要先npm install一下），但是使用node-webkit 0.9.2的话，编译不会通过，会提示有error，于是继续google，终于在sqlite3项目的issue 265中看到了这个：
+看来是死胡同了，无奈只能使用更早版本的node-webkit，所以我换成了node-webkit 0.8.6版，然后再次用nw-gyp编译，还是出错，错误是Undefined variable module_name in binding.gyp while trying to load binding.gyp，继续google，最后又在wiki中找到了解答：Build native modules with nw gyp，关键的一段是：
+ For some packages you may need to use node-pre-gyp (e.g. when you get the error &ldquo;Undefined variable module_name in binding.gyp while trying to load binding.gyp&rdquo;), which supports building for both node.
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/">Read more…</a>
+	</div>
+</article>
+</main>
+
+
+			</div>
+			
+<aside class="sidebar sidebar--left"><div class="widget-search widget">
+	<form class="widget-search__form" role="search" method="get" action="https://google.com/search">
+		<label>
+			<input class="widget-search__field" type="search" placeholder="SEARCH..." value="" name="q" aria-label="SEARCH...">
+		</label>
+		<input class="widget-search__submit" type="submit" value="Search">
+		<input type="hidden" name="sitesearch" value="http://blog.voidmain.guru/" />
+	</form>
+</div>
+<div class="widget-recent widget">
+	<h4 class="widget__title">Recent Posts</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/2017-10-03-http-status-405vs501/">HTTP状态码——405 vs 501</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-06-09-stroke-animation-in-action/">实战stroke动画</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2016-02-27-thoughts-on-functional-programming/">函数式编程随想（一）——函数式编程的好处及柯里化的意义</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/">帮他人提交Mac应用</a></li>
+			<li class="widget__item"><a class="widget__link" href="/posts/2014-07-21-stand-programming/">开始站立式编程</a></li>
+		</ul>
+	</div>
+</div>
+<div class="widget-categories widget">
+	<h4 class="widget__title">Categories</h4>
+	<div class="widget__content">
+		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/categories/android">Android</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/animator">Animator</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/app">App</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/appstore">Appstore</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cocoa">Cocoa</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/cpp">Cpp</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/developer">Developer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/dota">Dota</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/fragment">Fragment</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/framework">Framework</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/functional-programming">Functional programming</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/gamer">Gamer</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/health">Health</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/http">Http</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/image">Image</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/ios">Ios</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/leadership">Leadership</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learn">Learn</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/learning">Learning</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/mac">Mac</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/node-webkit">Node webkit</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/nsimage">Nsimage</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/osx">Osx</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/protocol">Protocol</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sc2">Sc2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/schedule">Schedule</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/sqlite3">Sqlite3</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startcraft2">Startcraft2</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/startup">Startup</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/static-lib">Static lib</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swift">Swift</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/swiftapple">Swiftapple</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/timetable">Timetable</a></li>
+			<li class="widget__item"><a class="widget__link" href="/categories/%e5%8a%a8%e7%94%bb">动画</a></li>
+		</ul>
+	</div>
+</div>
+</aside>
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script></body>
+</html>

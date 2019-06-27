@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>learning on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/learning/</link>
+    <description>Recent content in learning on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 15 Jul 2013 14:34:57 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/learning/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>What I have learned from terminal-notifier</title>
+      <link>http://blog.voidmain.guru/posts/2013-07-15-what-i-have-learned-from-terminal-notifier/</link>
+      <pubDate>Mon, 15 Jul 2013 14:34:57 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-07-15-what-i-have-learned-from-terminal-notifier/</guid>
+      <description>The terminal-notifier is a cute command-line tool written by alloy that sends User Notifications for OS X systems running 10.8 or later.
+There&amp;rsquo;s not so much code down there, but still I&amp;rsquo;ve learned a lot, and here&amp;rsquo;s what I&amp;rsquo;ve got:
+Architecture Overview There are two major parts in this project. To deliver NSUserNotification or respond to user click event, we need a Cocoa App even though there will never be a display window or something.</description>
+    </item>
+    
+  </channel>
+</rss>

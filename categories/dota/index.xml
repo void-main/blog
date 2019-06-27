@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>dota on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/categories/dota/</link>
+    <description>Recent content in dota on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Sat, 20 Jul 2013 16:40:00 +0000</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/categories/dota/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>[教程]如何在Mac上玩儿国服Dota2（非port版）</title>
+      <link>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-dota2-on-mac/</link>
+      <pubDate>Sat, 20 Jul 2013 16:40:00 +0000</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2013-07-20-how-to-play-dota2-on-mac/</guid>
+      <description> 很多人不买Mac的原因（之一）是Mac上没啥游戏，这一点确实没错，不过仔细想想大家有多少时间玩儿*那么*多游戏呢？其实平时有一两个长玩的游戏也就不错了。另一方面，很多著名游戏例如WOW，Dota2，SC2，D3等等都有原生的Mac版，本来就没有太大的游戏障碍。
+*但是*这些游戏都没有原生的国服版本，真是悲哀啊。于是Mac党只能自立更生，寻找解决方案，这篇博文就是教大家如何在Mac上玩儿原生的Dota2。接下来还会写一篇关于如何在Mac上玩儿原生国服星际2的教程。
+准备工作 言归正传，要想在Mac上玩国服Dota2，首先需要有一个完美世界的帐号，以及Dota2激活码（等公测了这个激活码应该也就不是必须的了）。为了进入游戏，还需要一个Steam帐号。有了这些就万事具备了。
+绑定帐号 在Mac上安装Steam平台，并用自己的steam帐号登陆，这个时候直接搜索Dota2应该是无法找到的，好像是对中国地区不开放的原因，所以需要在朋友或者自己的windows电脑上，下载国服的Dota2客户端，然后用Steam帐号登陆，并绑定自己的完美世界帐号以及Dota2激活码。
+下载内容 绑定结束后，再次登陆Steam平台，就会看到Dota2和Dota2 Test两个游戏，如下图。其中Dota2 Test是Beta版本的Dota2，一般用于公测，*注意*：下载这个版本的Dota2是无法登陆国服的，因为国服没有对应的服务。所以咱们直接下载Dota2就可以了。等待下载完成。 设置参数 下载完成后，在Dota2这一项目上点击右键，选择Properties选项，点击Set Launch Options按钮，在弹出框中输入：-perfectworld steam，然后点OK，如下图。这样一来，就指定了Steam运行的是完美世界的服务，也就是国服了。 Have Fun 准备就绪后就可以启动游戏了，在我的本子上测试效果还可以，稍微有点模糊，另外，因为Steam上下载的内容是英文版的，所以人物的对话和配音都是英文的，这一点应该可以通过将国服对应文件复制过来解决，但是我没有具体检查文件列表，有兴趣的朋友可以研究下，并且欢迎给我留言，我好即时补充。借用Dota蛋疼集锦里面小Y的话吧，Don&amp;rsquo;t worry, be happy! </description>
+    </item>
+    
+  </channel>
+</rss>

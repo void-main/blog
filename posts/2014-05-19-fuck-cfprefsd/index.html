@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>NSUserDefaults无法保存？ - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="NSUserDefaults无法保存？" />
+<meta property="og:description" content="FML。。花了一上午调了一个bug。。
+事情是这样的，我正在写的这个mac应用用到了Core Data，所以就把Core Data的文件放到了~/Library/Container/my.app.container这个目录下。但是在开发的过程中entity的结构总会发生变化，在基本稳定之前我也不想写升级那些，所以就偷懒*把container目录给删了*。
+上午在用NSUserDefaults保存用户的选项的时候，当前保存成功，调用[[NSUserDefaults standardUserDefaults] synchronize]也返回YES，但是就是重启应用之后保存的内容就消失了。去~/Library/Preferences目录下找也确实没有对应的文件。
+调了一上午，尝试了各种解决方案，也没搞定，最后终于在这个SO问题里面找到了答案。
+关键是answer下面的第一个comment：
+ Also if you move the container while testing / debugging to the trash, the cfprefsd (see Activity Monitor) still keeps a link to the .plist. Empty the trash and force quit both cfprefsd (user and root).
+ 用ps一看果然有2个cfprefsd，有一个应该就是之前删除container的时候留下的，把它kill了，然后重试就好了！
+感谢 @mahal，真是救了我一命！" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2014-05-19-fuck-cfprefsd/" />
+<meta property="article:published_time" content="2014-05-18T18:27:30+00:00" />
+<meta property="article:modified_time" content="2014-05-18T18:27:30+00:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="NSUserDefaults无法保存？"/>
+<meta name="twitter:description" content="FML。。花了一上午调了一个bug。。
+事情是这样的，我正在写的这个mac应用用到了Core Data，所以就把Core Data的文件放到了~/Library/Container/my.app.container这个目录下。但是在开发的过程中entity的结构总会发生变化，在基本稳定之前我也不想写升级那些，所以就偷懒*把container目录给删了*。
+上午在用NSUserDefaults保存用户的选项的时候，当前保存成功，调用[[NSUserDefaults standardUserDefaults] synchronize]也返回YES，但是就是重启应用之后保存的内容就消失了。去~/Library/Preferences目录下找也确实没有对应的文件。
+调了一上午，尝试了各种解决方案，也没搞定，最后终于在这个SO问题里面找到了答案。
+关键是answer下面的第一个comment：
+ Also if you move the container while testing / debugging to the trash, the cfprefsd (see Activity Monitor) still keeps a link to the .plist. Empty the trash and force quit both cfprefsd (user and root).
+ 用ps一看果然有2个cfprefsd，有一个应该就是之前删除container的时候留下的，把它kill了，然后重试就好了！
+感谢 @mahal，真是救了我一命！"/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">NSUserDefaults无法保存？</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-05-18T18:27:30">2014-05-18</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a></span>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		
+	</div>
+</div>
+<div class="content post__content clearfix">
+			<p>FML。。花了一上午调了一个bug。。</p>
+
+<p>事情是这样的，我正在写的这个mac应用用到了Core Data，所以就把Core Data的文件放到了<code>~/Library/Container/my.app.container</code>这个目录下。但是在开发的过程中entity的结构总会发生变化，在基本稳定之前我也不想写升级那些，所以就偷懒*把container目录给删了*。</p>
+
+<p>上午在用<code>NSUserDefaults</code>保存用户的选项的时候，当前保存成功，调用<code>[[NSUserDefaults standardUserDefaults] synchronize]</code>也返回<code>YES</code>，但是就是重启应用之后保存的内容就消失了。去<code>~/Library/Preferences</code>目录下找也确实没有对应的文件。</p>
+
+<p>调了一上午，尝试了各种解决方案，也没搞定，最后终于在这个<a href="http://stackoverflow.com/questions/22242106/mac-sandbox-created-but-no-nsuserdefaults-plist">SO问题里面找到了答案</a>。</p>
+
+<p>关键是answer下面的第一个comment：</p>
+
+<blockquote>
+<p>Also if you move the container while testing / debugging to the trash, the cfprefsd (see Activity Monitor) still keeps a link to the .plist. Empty the trash and force quit both cfprefsd (user and root).</p>
+</blockquote>
+
+<p>用ps一看果然有2个cfprefsd，有一个应该就是之前删除container的时候留下的，把它kill了，然后重试就好了！</p>
+
+<p>感谢 <a href="http://stackoverflow.com/users/317461/mahal-tertin">@mahal</a>，真是救了我一命！</p>
+
+		</div>
+		
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2014-05-18-leadership-from-a-dancing-guy/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">关于Leadership</p></a>
+	</div>
+	<div class="post-nav__item post-nav__item--next">
+		<a class="post-nav__link" href="/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/" rel="next"><span class="post-nav__caption">Next&thinsp;»</span><p class="post-nav__post-title">在node-webkit中使用sqlite3</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>
