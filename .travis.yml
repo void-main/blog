@@ -12,7 +12,7 @@ branches:
 install:
 # 安装最新的hugo
   - go get gopkg.in/yaml.v2
-  - go get -u -v github.com/gohugoio/hugo
+  - go get github.com/gohugoio/hugo
 
 script:
 # 运行hugo命令
