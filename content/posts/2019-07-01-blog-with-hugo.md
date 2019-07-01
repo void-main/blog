@@ -4,10 +4,11 @@ date: 2019-07-01T09:21:57+08:00
 topics:
   - blog
   - hugo
-  - personal
+  - travis
 tags:
   - hugo
   - blog
+  - travis
 summary: 本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。
 ---
 ## TL;DR
@@ -70,6 +71,7 @@ hugo解决问题的方法也基本是目前的标准方法，就是**模板填�
 ![Hugo流程]()
 
 作为使用者，我们需要关心这几点：
+
 1. 选择并配置一个自己喜欢的主题
 2. 使用markdown撰写blog的内容
 3. 生成的静态内容会在一个叫public的文件夹内
