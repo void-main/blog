@@ -8,12 +8,15 @@ topics:
 tags:
   - hugo
   - blog
+summary: 本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。
 ---
 ## TL;DR
+- 程序员一定要写技术博客！
 - 如果你只是想写点东西，那么推荐使用[掘金](https://juejin.im/)、[知乎专栏](https://zhuanlan.zhihu.com/)、[简书](https://www.jianshu.com/)、[medium](https://medium.com/)等服务，几乎可以认为完全免费，甚至通过激励计划可能赚钱；如果你选这条路，可以关掉这篇文章了
-- 如果你想要有自己的一块空间，那么推荐还是使用[Github Pages](https://pages.github.com/)这类静态网页托管服务（过程没有想象的那么难），而且写完的内容可以分享到上面的网站
+- 如果你想要有自己的一块空间，那么推荐使用[Github Pages](https://pages.github.com/)这类静态网页托管服务（过程没有想象的那么难），而且写完的内容可以分享到上面的网站
 
 如果你决定了托管静态页面，那大概需要以下几步：
+
 - 安装hugo
 - hugo new site创建新blog站点
 - 挑选主题并进行配置
@@ -26,9 +29,9 @@ tags:
 ## Why Blogging?
 作为一个老码农，我一直有一个不好的习惯，就是不写blog。作为一个佛系blogger（17年到现在已经停更了快2年），原因有很多，因为懒、因为不知道该写什么、因为不知道写了有什么用。
 
-不过随着年纪增大，慢慢感觉记忆力有些衰退了，有的文档看过了以为自己记住了，但过了一周又忘记了，每次都要重新阅读，导致效率很低。
+不过随着年纪增大，慢慢感觉记忆力有些衰退了，有的文档看过了以为自己记住了，但过了几天又忘记了，每次都要重新阅读，导致效率很低。而且阅读的内容总感觉没有深入理解，一些corner情况会考虑的不周。
 
-就这个问题我进行了一些反思，主要原因是阅读只是被动的接受，而没有主动思考，所以看过以后对内容的印象偏低，所以很快就忘了。
+就这个问题我进行了一些反思，主要原因是阅读时只是被动的接受，而没有主动思考，所以看过以后对内容的印象偏低，所以很快就忘了。
 
 解决方法其实也很简单，只需要坚持一个原则，所有学过的东西都要有输出。输出可以有多种，可以是写demo项目，可以是用到实际工作中，可以是重新造个轮子，当然也可以是**写blog**。
 
@@ -91,16 +94,23 @@ hugo解决问题的方法也基本是目前的标准方法，就是**模板填�
 ## 创建站点
 使用 `hugo new site XXX` 命令可以很便捷的创建一个hugo站点。
 
-![hugo站点内容]()
+![hugo站点内容](/assets/blog-with-hugo/hugo_directory_structure.png)
 
-可以看到hugo给新的站点创建了一个目录，并且填充了几个文件夹。
+可以看到hugo给新的站点创建了一个目录，并且填充了几个文件夹。各个文件夹的含义hugo有一个[官方文档](https://gohugo.io/getting-started/directory-structure/)介绍。
+
+通常情况下你只需要记住：
+
+- archetypes是使用hugo new命令创建新blog的模板，如果你想调整hugo new生成的文件默认内容就修改这个目录下的文件
+- content下面放具体的动态内容，比如blog内容就会放到content下面
+- static存放静态内容，blog中难免出现一些图片内容，放到这里就对了
+- themes存放你选好的主题
 
 ## 基础配置
 基础框架生成后，第一个要做的事情是挑选一下我们心仪的**主题**（还记得么，主题是一组模板），hugo有一个官方的主题站，叫[themes.gohugo.io](https://themes.gohugo.io/)，可以按喜好挑选，也可以自己创建主题，这[部分内容](https://gohugo.io/themes/creating/)我在这里就不赘述了。
 
 以最简单的官方主题为例：
 
-![hugo theme]()
+![hugo theme](/assets/blog-with-hugo/hugo_theme.png)
 
 通常每个主题都会提供自己的安装方法，通常大同小异，主要就是把theme当作git的submodue引入进来，然后修改对用的config.toml配置即可。如果不知道如何配置，可以参考hugo主题提供的demo站点。
 
@@ -123,6 +133,7 @@ topics:
 tags:
   - hugo
   - blog
+summary: 本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。
 ---
 这里开始就是blog的正文了。
 ```
@@ -133,15 +144,107 @@ tags:
 如果每次创建都需要啰哩啰嗦写一些通用头比较麻烦，因此hugo给我们提供了一个`hugo new XXX`的命令，通过这个命令，可以生成一个包含front matter的md文件，至此我们就可以打开自己喜欢的markdown编辑器，开心的写blog了！
 
 ### 预览
-编写过程中我们可以使用 `hugo server -D` 启动一个本地的hugo server，然后访问它提供的http服务就可以预览内容了，使用这个功能可以帮助我们更好的感知发布后正式环境的样式，非常方便。而且这个server自带热加载功能，文件修改**保存**后会自动刷新页面，非常方便。
+编写过程中我们可以使用 `hugo server -D` 启动一个本地的hugo server，然后访问它提供的http服务就可以预览内容了，使用这个功能可以帮助我们更好的感知发布后正式环境的样式，非常方便。而且这个server自带热加载功能，文件修改**保存**后会（fsnotify）自动刷新页面，非常方便。
+
+预览如下：
+
+![hugo preview](/assets/blog-with-hugo/hugo_preview.png)
+
+点击read more还可以看到具体内容
+
+![hugo preview](/assets/blog-with-hugo/hugo_preview_2.png)
+
 
 ## 发布！
 历尽千辛万苦，终于把blog写好啦，接下来就到了最重要的发布环节！
 
-## 拥有一个属于自己的域名
-我们的blog站点其他人已经可以访问了，但是还有一个小问题，这个站点的访问域名是：`xxx.github.io`，有点太普通了。我自己希望可以用自己的域名来称呼自己的blog，这样大家访问起来也比较方便。
+### Github Pages
+这里就要重点介绍下Github Pages这个良心服务啦，这个服务让用户可以为自己（或组织）以及自己的项目生成静态展示页面，并且免费提供托管服务。
+
+Github Pages的详细介绍可以参考[官网](https://pages.github.com/)，我这里简单介绍下他的两种模式以及使用方法。
+
+#### 个人页面
+个人模式常用于介绍个人或者组织，比如Github现在的东家 [microsoft.github.io](https://microsoft.github.io)，他们的opensource网站就是托管在github上的。
+
+对于这类网站，需要在Github上创建一个独特名字的repo，如果你的名字是`username`，那么这个repo的命名是：`username.github.io`。Github Pages会以静态网站的方式托管这个项目`master`分支的内容。刚刚微软的例子就可以对应到[microsoft/microsoft.github.io](https://github.com/microsoft/microsoft.github.io)这个项目。
+
+#### 项目页面
+刚刚可以看到，由于repo的命名规则，一个用户只能有一个介绍自己的repo。那么如果我想介绍某个特定的项目该怎么办呢？
+
+Github Pages的解决方案是活用特定git的分支。具体来说，如果我的用户名是`username`，我的一个项目叫`project`并且我创建了`gh-pages`分支，那么可以通过`http://username.github.io/project`方式访问。Github Pages会识别这类分支并进行托管。
+
+#### 总结一下
+如果你想为自己设计一个个人主页，或者为你的组织设计一个介绍门户，那么可以使用第一种个人页面模式。如果你的每个项目都希望有一个专门的介绍页面，那么可以使用第二种方式。
+
+具体的区别可以汇总为：
+
+| 使用方式 | 数量限制 | 托管分支 | 访问域名 | 样例 |
+| ------ | ----- | ------ | ------ | ------ |
+| 个人页面 | 每个用户/组织一个 | master | username.github.io | microsoft.github.io |
+| 项目页面 | 每个repo一个 | gh-pages | username.github.io/project | void-main.github.io/blog |
+
+我自己的门户页面`voidmain.guru`是使用第一种方式，而blog站点`blog.voidmain.guru`则是开了一个`void-main/blog`的项目并使用项目页面托管的。这两种方案除了前者有唯一性限制外没有本质的区别，所以可以放心选用。
+
+你可能注意到了，我的域名并不是标准Github Pages规范，这是因为Github Pages支持自定义域名。
+
+自己的域名只要花钱就可以从[GoDaddy](https://www.godaddy.com/)这样的域名服务商买到，Github Pages提供了配置方法，这里我就不展开了，如果有兴趣可以参考[文档](https://help.github.com/en/articles/quick-start-setting-up-a-custom-domain)
+
+#### 插曲：注意到域名了么？
+Github主站的域名是`github.com`，为啥所有托管网站的域名都是`github.io`呢？这个主要是基于安全考虑，他们的[这篇blog](https://github.blog/2013-04-05-new-github-pages-domain-github-io/)值得一读。
+
+## 实战
+说了这么多理论，该动手实践一下啦！由于我个人页面已经被占用了，所以我们来展示一下如何使用一个项目页面做个人blog。**如果你选择使用个人页面托管，只是分支和访问url不同，其他的流程是一致的**。
+
+### Step 1 - 本地blog配置
+
+![Step 1](/assets/blog-with-hugo/InAction_Step1.png)
+
+使用`hugo new site`命令创建本地hugo项目，然后选择对应的主题并进行配置。
+
+基本配置完成后，使用`hugo new posts/my-first-post.md`创建一个blog，注意hugo会自动把blog内容放到`content`目录下。
+
+最后使用`hugo server -D`在本地进行预览
+
+### Step 2 - 源文件提交
+
+![Step 2](/assets/blog-with-hugo/InAction_Step2.png)
+
+为了保证我们内容的安全，在源文件写完以后需要提交到Github上。这一步就是基本的git操作，不再赘述。
+
+### Step 3 - 生成静态文件
+
+![Step 3](/assets/blog-with-hugo/InAction_Step3.png)
+
+blog修改完成后，可以把blog的draft模式置为false，这样我们的hugo命令就会帮我们生成啦，生成的结果都会放到`public`目录下。
+
+### Step 4 - 创建gh-pages分支并发布
+这一步是单纯的git命令操作，我就不再截图了，基本就是checkout一个gh-pages分支，然后把里面的内容都删掉，把之前public的内容放置到根目录，然后commit、push即可。
+
+### Step 5 - 访问
+
+![Step 5](/assets/blog-with-hugo/InAction_Step5.png)
+
+此时如果访问Github sample项目，在项目的设置中，就能看到Github已经检测到这个项目有Github Pages需求，同时会告知访问方式，点击就可以访问啦！
+
+至此整个过程就完成啦，你已经可以看到自己的主页上线啦！
 
 ## 唉，发布太麻烦了
+所以我们现在来梳理一下流程。每次要发布新的blog我们需要走这么几步：
+
+1. 在源码分支撰写blog，编写完成后将源内容commit、push到源码分支上
+2. 并通过hugo命令编译成静态页面，输出的结果在`public`目录下
+3. 将`public`目录的内容复制到托管分支（取决于你是个人主页还是项目主页，分别复制到`master`和`gh-pages`分支）
+4. 将托管分支的内容commit、push到Github上。
+
+这里面涉及大量分支切换与git操作，很繁琐且容易出错。
+
+我们设想一下理想的方式是只操作源分支（不做分支切换），blog内容写完以后，只要把修改push到源码分支，然后页面的内容会自动更新。
+
+我们可以使用travis帮我们实现这个工作。
+
+我们可以配置travis监听某个项目特定分支的变更，如果发现变更，执行我们预设的脚本，这样我们就可以在脚本中写好命令实现之前的编译、复制、切换分支、push流程。这个流程有一些配置，网上有 [很多](https://docs.travis-ci.com/user/deployment/pages/) [很好](https://ssk7833.github.io/blog/2016/01/21/using-TravisCI-to-deploy-on-GitHub-pages/) 的 [教程](https://neveryu.github.io/2019/02/05/travis-ci/)。
+
+放心，这个脚本不用你来写！你可以直接复制我的[个人页面](https://github.com/void-main/void-main.github.io/blob/source/.travis.yml)模板或[项目页面](https://github.com/void-main/blog/blob/master/.travis.yml)模板。
 
 有了travis，我们目前的blog流程就变成这样了：
 ![blog流程]()
