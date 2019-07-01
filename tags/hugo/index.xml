@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>hugo on VoidMain&#39;s Blog</title>
+    <link>http://blog.voidmain.guru/tags/hugo/</link>
+    <description>Recent content in hugo on VoidMain&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Mon, 01 Jul 2019 09:21:57 +0800</lastBuildDate>
+    
+	<atom:link href="http://blog.voidmain.guru/tags/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>使用hugo搭建个人blog</title>
+      <link>http://blog.voidmain.guru/posts/2019-07-01-blog-with-hugo/</link>
+      <pubDate>Mon, 01 Jul 2019 09:21:57 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2019-07-01-blog-with-hugo/</guid>
+      <description>本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。</description>
+    </item>
+    
+  </channel>
+</rss>

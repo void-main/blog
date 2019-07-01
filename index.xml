@@ -6,10 +6,19 @@
     <description>Recent content on VoidMain&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>zh-CN</language>
-    <lastBuildDate>Tue, 03 Oct 2017 21:31:37 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 01 Jul 2019 09:21:57 +0800</lastBuildDate>
     
 	<atom:link href="http://blog.voidmain.guru/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>使用hugo搭建个人blog</title>
+      <link>http://blog.voidmain.guru/posts/2019-07-01-blog-with-hugo/</link>
+      <pubDate>Mon, 01 Jul 2019 09:21:57 +0800</pubDate>
+      
+      <guid>http://blog.voidmain.guru/posts/2019-07-01-blog-with-hugo/</guid>
+      <description>本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。</description>
+    </item>
     
     <item>
       <title>HTTP状态码——405 vs 501</title>

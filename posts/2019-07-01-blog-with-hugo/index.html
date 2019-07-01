@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zh-CN">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>使用hugo搭建个人blog - VoidMain&#39;s Blog</title>
+	<script>(function(d,e){d[e]=d[e].replace("no-js","js");})(document.documentElement,"className");</script>
+	<meta name="description" content="">
+	<meta property="og:title" content="使用hugo搭建个人blog" />
+<meta property="og:description" content="本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://blog.voidmain.guru/posts/2019-07-01-blog-with-hugo/" />
+<meta property="article:published_time" content="2019-07-01T09:21:57+08:00" />
+<meta property="article:modified_time" content="2019-07-01T09:21:57+08:00" />
+
+	<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="使用hugo搭建个人blog"/>
+<meta name="twitter:description" content="本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。"/>
+
+	<link rel="dns-prefetch" href="//fonts.googleapis.com">
+	<link rel="dns-prefetch" href="//fonts.gstatic.com">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700">
+	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="/css/custom.css">
+	<link rel="shortcut icon" href="/favicon.ico">
+		
+</head>
+<body class="body">
+	<div class="container container--outer">
+		<header class="header">
+	<div class="container">
+		<div class="logo">
+			<a class="logo__link" href="/" title="VoidMain&#39;s Blog" rel="home">
+				<div class="logo__title">VoidMain&#39;s Blog</div>
+				<div class="logo__tagline">Blogs from VoidMain</div>
+			</a>
+		</div>
+		<div class="divider"></div>
+	</div>
+</header>
+		<div class="wrapper flex">
+			<div class="primary">
+			
+<main class="main" role="main">
+	<article class="post">
+		<header class="post__header">
+			<h1 class="post__title">使用hugo搭建个人blog</h1>
+			<div class="post__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2019-07-01T09:21:57">2019-07-01</time>
+</div>
+</div>
+		</header>
+<div class="post__toc toc">
+	<div class="toc__title">Page content</div>
+	<div class="toc__menu">
+		<nav id="TableOfContents">
+<ul>
+<li>
+<ul>
+<li><a href="#tl-dr">TL;DR</a></li>
+<li><a href="#why-blogging">Why Blogging?</a></li>
+<li><a href="#写blog的平台">写Blog的平台</a></li>
+<li><a href="#静态网页托管">静态网页托管</a></li>
+<li><a href="#hugo简介">Hugo简介</a>
+<ul>
+<li><a href="#静态页面生成器">静态页面生成器</a></li>
+<li><a href="#安装hugo">安装hugo</a></li>
+<li><a href="#使用cli作为操作接口">使用cli作为操作接口</a></li>
+</ul></li>
+<li><a href="#创建站点">创建站点</a></li>
+<li><a href="#基础配置">基础配置</a></li>
+<li><a href="#撰写blog">撰写blog</a>
+<ul>
+<li><a href="#blog的元数据-front-matter">blog的元数据，front matter</a></li>
+<li><a href="#使用hugo-new命令创建blog内容模板">使用hugo new命令创建blog内容模板</a></li>
+<li><a href="#预览">预览</a></li>
+</ul></li>
+<li><a href="#发布">发布！</a>
+<ul>
+<li><a href="#github-pages">Github Pages</a>
+<ul>
+<li><a href="#个人页面">个人页面</a></li>
+<li><a href="#项目页面">项目页面</a></li>
+<li><a href="#总结一下">总结一下</a></li>
+<li><a href="#插曲-注意到域名了么">插曲：注意到域名了么？</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#实战">实战</a>
+<ul>
+<li><a href="#step-1-本地blog配置">Step 1 - 本地blog配置</a></li>
+<li><a href="#step-2-源文件提交">Step 2 - 源文件提交</a></li>
+<li><a href="#step-3-生成静态文件">Step 3 - 生成静态文件</a></li>
+<li><a href="#step-4-创建gh-pages分支并发布">Step 4 - 创建gh-pages分支并发布</a></li>
+<li><a href="#step-5-访问">Step 5 - 访问</a></li>
+</ul></li>
+<li><a href="#唉-发布太麻烦了">唉，发布太麻烦了</a>
+<ul>
+<li><a href="#总结">总结</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+	</div>
+</div>
+<div class="content post__content clearfix">
+			
+
+<h2 id="tl-dr">TL;DR</h2>
+
+<ul>
+<li>程序员一定要写技术博客！</li>
+<li>如果你只是想写点东西，那么推荐使用<a href="https://juejin.im/">掘金</a>、<a href="https://zhuanlan.zhihu.com/">知乎专栏</a>、<a href="https://www.jianshu.com/">简书</a>、<a href="https://medium.com/">medium</a>等服务，几乎可以认为完全免费，甚至通过激励计划可能赚钱；如果你选这条路，可以关掉这篇文章了</li>
+<li>如果你想要有自己的一块空间，那么推荐使用<a href="https://pages.github.com/">Github Pages</a>这类静态网页托管服务（过程没有想象的那么难），而且写完的内容可以分享到上面的网站</li>
+</ul>
+
+<p>如果你决定了托管静态页面，那大概需要以下几步：</p>
+
+<ul>
+<li>安装hugo</li>
+<li>hugo new site创建新blog站点</li>
+<li>挑选主题并进行配置</li>
+<li>hugo new posts/new-blog</li>
+<li>使用markdown写blog</li>
+<li>使用Github Pages托管静态网站</li>
+<li>（可选）成为高贵的RMB玩家，选一个属于自己的域名</li>
+<li><strong>使用travis-ci完善自动发布流程</strong>，这一步一般人不会告诉你</li>
+</ul>
+
+<h2 id="why-blogging">Why Blogging?</h2>
+
+<p>作为一个老码农，我一直有一个不好的习惯，就是不写blog。作为一个佛系blogger（17年到现在已经停更了快2年），原因有很多，因为懒、因为不知道该写什么、因为不知道写了有什么用。</p>
+
+<p>不过随着年纪增大，慢慢感觉记忆力有些衰退了，有的文档看过了以为自己记住了，但过了几天又忘记了，每次都要重新阅读，导致效率很低。而且阅读的内容总感觉没有深入理解，一些corner情况会考虑的不周。</p>
+
+<p>就这个问题我进行了一些反思，主要原因是阅读时只是被动的接受，而没有主动思考，所以看过以后对内容的印象偏低，所以很快就忘了。</p>
+
+<p>解决方法其实也很简单，只需要坚持一个原则，所有学过的东西都要有输出。输出可以有多种，可以是写demo项目，可以是用到实际工作中，可以是重新造个轮子，当然也可以是<strong>写blog</strong>。</p>
+
+<p>写blog与其说是记录，更像是一个信息、知识的梳理过程。在这个过程中通过重新组织、理解来加深对信息的理解。</p>
+
+<p>因此我决定重新开始写blog，确保做到<strong>学到的新知识都记录相关blog</strong>。</p>
+
+<h2 id="写blog的平台">写Blog的平台</h2>
+
+<p>在决定写blog以后，第一个要做的选择是使用成熟的blogging服务，还是自己建站。</p>
+
+<p>如果你只是想找个地方撰写内容，那么我建议还是使用现有的blogging服务吧，有很多的好处，包括内嵌的用户系统、feed流、自带图床、自带分享系统以及相应的激励体系。</p>
+
+<p>我个人更倾向能有一块自己的空间，域名、风格可以更加个性化，所以我还是选择了自己建站。但是这两者并不冲突，例如我可以把自己blog的URL直接分享到掘金，这样二者的优势就可以部分兼得。</p>
+
+<h2 id="静态网页托管">静态网页托管</h2>
+
+<p>我搭建个人blog的一个强需求是使用静态网页托管服务，比如Github Pages。</p>
+
+<p><strong>千万不要</strong>尝试通过租VPS来托管页面。这里面涉及到成本、资源安全等一系列问题，要维护起来非常麻烦。如果你不了解我可以举个简单的例子，你的blog里面有一个图片，如果你把图片放到服务器上，那么每次读者阅读你的blog，就会去你的服务器上下载这个图片，这些都需要耗费服务器的带宽资源，如果你的文章不小心成了爆款，那么恭喜，你的信用卡估计也快要爆了。你可能会说可以用CDN啊，没错，那你就需要在类似cloudflare的网站上注册，还得进行相关配置，这样就引入了另外一套系统，更加复杂了，不要忘记我们的初心只是想写个blog而已。所以还是建议直接使用Github Pages吧，让github的大佬们帮我们处理这些问题！</p>
+
+<h2 id="hugo简介">Hugo简介</h2>
+
+<p>决定好使用Github Pages以后，我们就需要寻找<strong>可以生成静态blog的框架</strong>。目前比较火的有<a href="https://gohugo.io/">hugo</a>和<a href="https://hexo.io/">hexo</a>。Hugo使用Go语言开发，Hexo使用JS开发。这两者功能和使用上大同小异，我没有进行仔细的对比，随缘选择了hugo。</p>
+
+<p>这里我不想对比hugo与hexo，在我看来这二者本质是相似的，我想重点介绍下hugo框架的大致原理，因为这有助于理解后续的网站托管过程。</p>
+
+<h3 id="静态页面生成器">静态页面生成器</h3>
+
+<p>hugo的主要工作是根据你撰写的内容生成静态页面。</p>
+
+<p>静态页面的本质可以分为3部分：内容、样式和交互。样式和交互都是相对比较固定的要素，一但确定很少会变更；而内容是每篇blog都不同的地方，所以一个优秀的blog框架要做到的就是让blogger可以专注于内容撰写。</p>
+
+<p>hugo解决问题的方法也基本是目前的标准方法，就是<strong>模板填充</strong>，具体来说，样式和交互抽象成<strong>模板</strong>，一组模板形成一个<strong>主题</strong>；模板里面会有一些<strong>占位符</strong>，等着用实际的blog内容填充。</p>
+
+<p>在写blog时通常blog的布局都比较统一，我们只希望专注内容的撰写，<strong>markdown</strong>就是一种很好的语言。通过markdown我们可以在写内容的时候描述我们希望内容如何布局，但又不用关心具体的样式，这可以极大提高生产效率。hugo使用markdown撰写blog内容，但又增加了一部分blog特有的信息，这个稍后再说。</p>
+
+<p>当blogger写完了一篇blog，就可以委托hugo帮他生成新的静态内容，hugo会使用blogger设置的模板加上blog的内容，通过<strong>模板引擎</strong>把占位符替换成实际blog的内容，并生成静态页面，这样一个流程就完成了，具体流程可以参考下图。</p>
+
+<p><img src="/assets/blog-with-hugo/Hugo_Core.png" alt="Hugo流程" /></p>
+
+<p>作为使用者，我们需要关心这几点：</p>
+
+<ol>
+<li>选择并配置一个自己喜欢的主题</li>
+<li>使用markdown撰写blog的内容</li>
+<li>生成的静态内容会在一个叫public的文件夹内</li>
+<li>有了完整的静态内容，就可以进行发布流程了</li>
+</ol>
+
+<h3 id="安装hugo">安装hugo</h3>
+
+<p>如果你的系统安装了homebrew（或者linuxbrew），那么hugo的安装非常简单，一个命令：<code>brew install hugo</code>，你也可以通过下载二进制的方式进行安装，具体可以参考<a href="https://gohugo.io/getting-started/installing">官网</a>。</p>
+
+<h3 id="使用cli作为操作接口">使用cli作为操作接口</h3>
+
+<p>根据刚刚的描述hugo作为blog框架帮我们做了很多事情，那我们怎么跟hugo交互呢，主要就是通过hugo cli。安装完hugo后，我们就可以使用 <code>hugo</code> 命令于hugo交互啦。我把常见命令与功能列成了一个表格，参考：</p>
+
+<table>
+<thead>
+<tr>
+<th>命令名称</th>
+<th>参数</th>
+<th>功能描述</th>
+<th>样例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>hugo version</td>
+<td>无</td>
+<td>检查版本号</td>
+<td>hugo version</td>
+</tr>
+
+<tr>
+<td>hugo new site ${SITENAME}</td>
+<td>SITENAME，站点名称</td>
+<td>创建一个新的hugo站点，并填充初始化内容</td>
+<td>hugo new site my-blog</td>
+</tr>
+
+<tr>
+<td>hugo new ${BLOGNAME}</td>
+<td>BLOGNAME，blog的完整路径</td>
+<td>在指定路径创建一个blog内容</td>
+<td>blog new content/posts/my-new-blog.md</td>
+</tr>
+
+<tr>
+<td>hugo server</td>
+<td>-D，编译draft内容，新blog默认是draft模式，不会生成京台内容，加上-D强制生成这些blog内容，主要用于本地预览</td>
+<td>启动一个本地托管server，可以预览blog内容</td>
+<td>hugo server -D</td>
+</tr>
+
+<tr>
+<td>hugo</td>
+<td>无</td>
+<td>编译静态内容</td>
+<td>hugo</td>
+</tr>
+</tbody>
+</table>
+
+<p>下面会具体介绍几个常用的命令</p>
+
+<h2 id="创建站点">创建站点</h2>
+
+<p>使用 <code>hugo new site XXX</code> 命令可以很便捷的创建一个hugo站点。</p>
+
+<p><img src="/assets/blog-with-hugo/hugo_directory_structure.png" alt="hugo站点内容" /></p>
+
+<p>可以看到hugo给新的站点创建了一个目录，并且填充了几个文件夹。各个文件夹的含义hugo有一个<a href="https://gohugo.io/getting-started/directory-structure/">官方文档</a>介绍。</p>
+
+<p>通常情况下你只需要记住：</p>
+
+<ul>
+<li>archetypes是使用hugo new命令创建新blog的模板，如果你想调整hugo new生成的文件默认内容就修改这个目录下的文件</li>
+<li>content下面放具体的动态内容，比如blog内容就会放到content下面</li>
+<li>static存放静态内容，blog中难免出现一些图片内容，放到这里就对了</li>
+<li>themes存放你选好的主题</li>
+</ul>
+
+<h2 id="基础配置">基础配置</h2>
+
+<p>基础框架生成后，第一个要做的事情是挑选一下我们心仪的<strong>主题</strong>（还记得么，主题是一组模板），hugo有一个官方的主题站，叫<a href="https://themes.gohugo.io/">themes.gohugo.io</a>，可以按喜好挑选，也可以自己创建主题，这<a href="https://gohugo.io/themes/creating/">部分内容</a>我在这里就不赘述了。</p>
+
+<p>以最简单的官方主题为例：</p>
+
+<p><img src="/assets/blog-with-hugo/hugo_theme.png" alt="hugo theme" /></p>
+
+<p>通常每个主题都会提供自己的安装方法，通常大同小异，主要就是把theme当作git的submodue引入进来，然后修改对用的config.toml配置即可。如果不知道如何配置，可以参考hugo主题提供的demo站点。</p>
+
+<h2 id="撰写blog">撰写blog</h2>
+
+<p>之前有提到过，每个blog除了内容部分以外，还有一个很重要的是描述blog的一些属性。举例来说，blog的标题叫什么、什么时候写的blog、blog的标签是啥、主题又是啥，这些都是blog的元数据。</p>
+
+<p>hugo使用markdown来描述blog的正文内容，那这些元数据如何表示呢？hugo选择在markdown文件头添加一部分信息，并管这些信息叫<strong>front matter</strong>。</p>
+
+<h3 id="blog的元数据-front-matter">blog的元数据，front matter</h3>
+
+<p>为了区别front matter与正文内容，front matter使用一对 <code>---</code> 作为起止界限。这篇blog的front matter如下：</p>
+
+<pre><code>---
+title: &quot;使用hugo搭建个人blog&quot;
+date: 2019-07-01T09:21:57+08:00
+draft: false
+topics:
+  - blog
+  - hugo
+  - personal
+tags:
+  - hugo
+  - blog
+summary: 本文介绍如何基于hugo搭建自己的个人blog，包括blog的意义、blog服务选择、hugo介绍以及使用travis进行一定程度自动化等内容。
+---
+这里开始就是blog的正文了。
+</code></pre>
+
+<p>可以看到front matter使用toml，支持字典与数组来描述各个属性。具体的写法也很好理解，没必要啰嗦了。</p>
+
+<h3 id="使用hugo-new命令创建blog内容模板">使用hugo new命令创建blog内容模板</h3>
+
+<p>如果每次创建都需要啰哩啰嗦写一些通用头比较麻烦，因此hugo给我们提供了一个<code>hugo new XXX</code>的命令，通过这个命令，可以生成一个包含front matter的md文件，至此我们就可以打开自己喜欢的markdown编辑器，开心的写blog了！</p>
+
+<h3 id="预览">预览</h3>
+
+<p>编写过程中我们可以使用 <code>hugo server -D</code> 启动一个本地的hugo server，然后访问它提供的http服务就可以预览内容了，使用这个功能可以帮助我们更好的感知发布后正式环境的样式，非常方便。而且这个server自带热加载功能，文件修改<strong>保存</strong>后会（fsnotify）自动刷新页面，非常方便。</p>
+
+<p>预览如下：</p>
+
+<p><img src="/assets/blog-with-hugo/hugo_preview.png" alt="hugo preview" /></p>
+
+<p>点击read more还可以看到具体内容</p>
+
+<p><img src="/assets/blog-with-hugo/hugo_preview_2.png" alt="hugo preview" /></p>
+
+<h2 id="发布">发布！</h2>
+
+<p>历尽千辛万苦，终于把blog写好啦，接下来就到了最重要的发布环节！</p>
+
+<h3 id="github-pages">Github Pages</h3>
+
+<p>这里就要重点介绍下Github Pages这个良心服务啦，这个服务让用户可以为自己（或组织）以及自己的项目生成静态展示页面，并且免费提供托管服务。</p>
+
+<p>Github Pages的详细介绍可以参考<a href="https://pages.github.com/">官网</a>，我这里简单介绍下他的两种模式以及使用方法。</p>
+
+<h4 id="个人页面">个人页面</h4>
+
+<p>个人模式常用于介绍个人或者组织，比如Github现在的东家 <a href="https://microsoft.github.io">microsoft.github.io</a>，他们的opensource网站就是托管在github上的。</p>
+
+<p>对于这类网站，需要在Github上创建一个独特名字的repo，如果你的名字是<code>username</code>，那么这个repo的命名是：<code>username.github.io</code>。Github Pages会以静态网站的方式托管这个项目<code>master</code>分支的内容。刚刚微软的例子就可以对应到<a href="https://github.com/microsoft/microsoft.github.io">microsoft/microsoft.github.io</a>这个项目。</p>
+
+<h4 id="项目页面">项目页面</h4>
+
+<p>刚刚可以看到，由于repo的命名规则，一个用户只能有一个介绍自己的repo。那么如果我想介绍某个特定的项目该怎么办呢？</p>
+
+<p>Github Pages的解决方案是活用特定git的分支。具体来说，如果我的用户名是<code>username</code>，我的一个项目叫<code>project</code>并且我创建了<code>gh-pages</code>分支，那么可以通过<code>http://username.github.io/project</code>方式访问。Github Pages会识别这类分支并进行托管。</p>
+
+<h4 id="总结一下">总结一下</h4>
+
+<p>如果你想为自己设计一个个人主页，或者为你的组织设计一个介绍门户，那么可以使用第一种个人页面模式。如果你的每个项目都希望有一个专门的介绍页面，那么可以使用第二种方式。</p>
+
+<p>具体的区别可以汇总为：</p>
+
+<table>
+<thead>
+<tr>
+<th>使用方式</th>
+<th>数量限制</th>
+<th>托管分支</th>
+<th>访问域名</th>
+<th>样例</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>个人页面</td>
+<td>每个用户/组织一个</td>
+<td>master</td>
+<td>username.github.io</td>
+<td>microsoft.github.io</td>
+</tr>
+
+<tr>
+<td>项目页面</td>
+<td>每个repo一个</td>
+<td>gh-pages</td>
+<td>username.github.io/project</td>
+<td>void-main.github.io/blog</td>
+</tr>
+</tbody>
+</table>
+
+<p>我自己的门户页面<code>voidmain.guru</code>是使用第一种方式，而blog站点<code>blog.voidmain.guru</code>则是开了一个<code>void-main/blog</code>的项目并使用项目页面托管的。这两种方案除了前者有唯一性限制外没有本质的区别，所以可以放心选用。</p>
+
+<p>你可能注意到了，我的域名并不是标准Github Pages规范，这是因为Github Pages支持自定义域名。</p>
+
+<p>自己的域名只要花钱就可以从<a href="https://www.godaddy.com/">GoDaddy</a>这样的域名服务商买到，Github Pages提供了配置方法，这里我就不展开了，如果有兴趣可以参考<a href="https://help.github.com/en/articles/quick-start-setting-up-a-custom-domain">文档</a></p>
+
+<h4 id="插曲-注意到域名了么">插曲：注意到域名了么？</h4>
+
+<p>Github主站的域名是<code>github.com</code>，为啥所有托管网站的域名都是<code>github.io</code>呢？这个主要是基于安全考虑，他们的<a href="https://github.blog/2013-04-05-new-github-pages-domain-github-io/">这篇blog</a>值得一读。</p>
+
+<h2 id="实战">实战</h2>
+
+<p>说了这么多理论，该动手实践一下啦！由于我个人页面已经被占用了，所以我们来展示一下如何使用一个项目页面做个人blog。<strong>如果你选择使用个人页面托管，只是分支和访问url不同，其他的流程是一致的</strong>。</p>
+
+<h3 id="step-1-本地blog配置">Step 1 - 本地blog配置</h3>
+
+<p><img src="/assets/blog-with-hugo/InAction_Step1.png" alt="Step 1" /></p>
+
+<p>使用<code>hugo new site</code>命令创建本地hugo项目，然后选择对应的主题并进行配置。</p>
+
+<p>基本配置完成后，使用<code>hugo new posts/my-first-post.md</code>创建一个blog，注意hugo会自动把blog内容放到<code>content</code>目录下。</p>
+
+<p>最后使用<code>hugo server -D</code>在本地进行预览</p>
+
+<h3 id="step-2-源文件提交">Step 2 - 源文件提交</h3>
+
+<p><img src="/assets/blog-with-hugo/InAction_Step2.png" alt="Step 2" /></p>
+
+<p>为了保证我们内容的安全，在源文件写完以后需要提交到Github上。这一步就是基本的git操作，不再赘述。</p>
+
+<h3 id="step-3-生成静态文件">Step 3 - 生成静态文件</h3>
+
+<p><img src="/assets/blog-with-hugo/InAction_Step3.png" alt="Step 3" /></p>
+
+<p>blog修改完成后，可以把blog的draft模式置为false，这样我们的hugo命令就会帮我们生成啦，生成的结果都会放到<code>public</code>目录下。</p>
+
+<h3 id="step-4-创建gh-pages分支并发布">Step 4 - 创建gh-pages分支并发布</h3>
+
+<p>这一步是单纯的git命令操作，我就不再截图了，基本就是checkout一个gh-pages分支，然后把里面的内容都删掉，把之前public的内容放置到根目录，然后commit、push即可。</p>
+
+<h3 id="step-5-访问">Step 5 - 访问</h3>
+
+<p><img src="/assets/blog-with-hugo/InAction_Step5.png" alt="Step 5" /></p>
+
+<p>此时如果访问Github sample项目，在项目的设置中，就能看到Github已经检测到这个项目有Github Pages需求，同时会告知访问方式，点击就可以访问啦！</p>
+
+<p>至此整个过程就完成啦，你已经可以看到自己的主页上线啦！</p>
+
+<h2 id="唉-发布太麻烦了">唉，发布太麻烦了</h2>
+
+<p>所以我们现在来梳理一下流程。每次要发布新的blog我们需要走这么几步：</p>
+
+<ol>
+<li>在源码分支撰写blog，编写完成后将源内容commit、push到源码分支上</li>
+<li>并通过hugo命令编译成静态页面，输出的结果在<code>public</code>目录下</li>
+<li>将<code>public</code>目录的内容复制到托管分支（取决于你是个人主页还是项目主页，分别复制到<code>master</code>和<code>gh-pages</code>分支）</li>
+<li>将托管分支的内容commit、push到Github上。</li>
+</ol>
+
+<p>这里面涉及大量分支切换与git操作，很繁琐且容易出错。</p>
+
+<p>我们设想一下理想的方式是只操作源分支（不做分支切换），blog内容写完以后，只要把修改push到源码分支，然后页面的内容会自动更新。</p>
+
+<p>我们可以使用travis帮我们实现这个工作。</p>
+
+<p>我们可以配置travis监听某个项目特定分支的变更，如果发现变更，执行我们预设的脚本，这样我们就可以在脚本中写好命令实现之前的编译、复制、切换分支、push流程。这个流程有一些配置，网上有 <a href="https://docs.travis-ci.com/user/deployment/pages/">很多</a> <a href="https://ssk7833.github.io/blog/2016/01/21/using-TravisCI-to-deploy-on-GitHub-pages/">很好</a> 的 <a href="https://neveryu.github.io/2019/02/05/travis-ci/">教程</a>。</p>
+
+<p>放心，这个脚本不用你来写！你可以直接复制我的<a href="https://github.com/void-main/void-main.github.io/blob/source/.travis.yml">个人页面</a>模板或<a href="https://github.com/void-main/blog/blob/master/.travis.yml">项目页面</a>模板。</p>
+
+<p>有了travis，我们目前的blog流程就变成这样了：
+![blog流程]()</p>
+
+<ol>
+<li><code>git checkout -b blog-XXX</code> 创建一个blog分支</li>
+<li>在新分支上使用 <code>hugo new content/posts/XXX.md</code> 撰写blog</li>
+<li>任意次git commit、git push到 blog-XXX 分支</li>
+<li>在确认文章可以发布后，将 <code>blog-XXX</code> 合并到 <code>source</code> 分支</li>
+<li><code>git push</code></li>
+<li>等几分钟刷新页面即可</li>
+</ol>
+
+<p>是不是相当方便 :)</p>
+
+<h3 id="总结">总结</h3>
+
+<ul>
+<li>blog是个好习惯，可以帮助我们梳理知识，加深理解与记忆，花点时间记blog不会有错</li>
+<li>可以使用商业blog服务，也可以自己搭建静态站点</li>
+<li>hugo使用主题（一组模板）来定义样式与交互，使用markdown来表示内容，通过模板引擎生成静态页面</li>
+<li>使用Github Pages托管静态页面，还可以自定义域名</li>
+<li>使用Git管理blog内容，可以快速实现版本控制、发布修改等一系列功能</li>
+<li>使用Travis帮我们发布静态页面，省去不必要的麻烦，让我们注意力专注在写作上</li>
+</ul>
+
+		</div>
+		
+<div class="post__tags tags clearfix">
+	<svg class="tags__icon icon icon-tag" width="16" height="16" viewBox="0 0 32 32"><path d="M32 19c0 1-1 2-1 2L21 31s-1 1-2 1-2-1-2-1L2 16c-1-1-1.4-2-1.4-2S0 12.5 0 11V3C0 1.5.8.8.8.8S1.5 0 3 0h8c1.5 0 3 .6 3 .6S15 1 16 2l15 15s1 1 1 2zM7 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/></svg>
+	<ul class="tags__list">
+		<li class="tags__item"><a class="tags__link btn" href="/tags/hugo/" rel="tag">hugo</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/blog/" rel="tag">blog</a></li>
+		<li class="tags__item"><a class="tags__link btn" href="/tags/travis/" rel="tag">travis</a></li>
+	</ul>
+</div>
+	</article>
+</main>
+
+<div class="authorbox clearfix">
+	<div class="authorbox__header">
+		<span class="authorbox__name">About Void Main</span>
+	</div>
+	<div class="authorbox__description">
+		A passionate coding bitch.
+	</div>
+</div>
+
+<nav class="post-nav flex">
+	<div class="post-nav__item post-nav__item--prev">
+		<a class="post-nav__link" href="/posts/2017-10-03-http-status-405vs501/" rel="prev"><span class="post-nav__caption">«&thinsp;Previous</span><p class="post-nav__post-title">HTTP状态码——405 vs 501</p></a>
+	</div>
+</nav>
+
+
+			</div>
+			
+		</div>
+		<footer class="footer">
+	<div class="container footer__container flex">
+		
+		<div class="footer__copyright">
+			&copy; 2019 Void Main.
+			<span class="footer__copyright-credits">Generated with <a href="https://gohugo.io/" rel="nofollow noopener" target="_blank">Hugo</a> and <a href="https://github.com/Vimux/Mainroad/" rel="nofollow noopener" target="_blank">Mainroad</a> theme.</span>
+		</div>
+	</div>
+</footer>
+	</div>
+<script async defer src="/js/menu.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML" async></script>
+</body>
+</html>

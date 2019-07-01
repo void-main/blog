@@ -12,7 +12,7 @@
 <meta property="og:type" content="website" />
 <meta property="og:url" content="http://blog.voidmain.guru/posts/" />
 
-<meta property="og:updated_time" content="2017-10-03T21:31:37+00:00" />
+<meta property="og:updated_time" content="2019-07-01T09:21:57+08:00" />
 
 	<meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="Posts"/>
@@ -47,6 +47,41 @@
 	<header class="main__header">
 		<h1 class="main__title">Posts</h1>
 	</header><article class="list__item post">
+	<header class="list__header">
+		<h3 class="list__title post__title ">
+			<a href="/posts/2014-06-04-learning-swift-1/" rel="bookmark">
+			使用Swift(1)
+			</a>
+		</h3>
+		<div class="list__meta meta">
+<div class="meta__item-datetime meta__item">
+	<svg class="meta__icon icon icon-time" width="16" height="14" viewBox="0 0 30 28"><path d="M15 0C7 0 1 6 1 14s6 14 14 14 14-6 14-14S23 0 15 0zm0 25C9 25 4 20 4 14S9 3 15 3s11 5 11 11-5 11-11 11zm1-18h-2v8.4l6.8 4.4L22 18l-6-3.8V7z"/></svg>
+	<time class="meta__text" datetime="2014-06-04T08:04:36">2014-06-04</time>
+</div>
+
+<div class="meta__item-categories meta__item">
+	<svg class="meta__icon icon icon-category" width="16" height="16" viewBox="0 0 16 16"><path d="m7 2l1 2h8v11h-16v-13z"/></svg>
+	<span class="meta__text"><a class="meta__link" href="/categories/swiftapple" rel="category">swiftapple</a>, <a class="meta__link" href="/categories/osx" rel="category">osx</a>, <a class="meta__link" href="/categories/cocoa" rel="category">cocoa</a></span>
+</div>
+</div>
+	</header>
+	<div class="content list__excerpt post__content clearfix">
+		序言 Apple新推出的Swift编程语言无疑会成为最近码农研究的热点，现在官方有一本官方Guide，这本书已经有国内的开发者开始翻译了（#该来的总会来的#）。
+当然只看完Swift的语法还不足以进行Cocoa应用开发，用郭总的话说，语言并不会带来新的起跑线，要想开发优秀的Cocoa应用还是需要对Cocoa这个框架的深入理解。这就跟用RubyMotion仍然要学习Cocoa是一个道理，万变不离其宗。这方面就可以参考Using Swift with Cocoa and Objective-C这篇文档。
+另外，Swift刚刚推出一天就已经有开发者用它开发了FlappyBird，可见大家对这门语言的热情。这个系列的博客主要是记录我在学习Swift语言过程中感觉有趣的语法、用法，并不会对所有语法都逐一进行分析，而是举几个简单的例子帮我自己来理解Swift这门语言。如果这些例子能帮助你对Swift这门语言建立一些基本的认识或者感觉，那就再好不过了！
+PS：博客内容的记录顺序大部分是根据官方Guide来的，因为这是我的阅读顺序，在阅读过程中可能会根据我的理解跳跃穿插一些内容。另外因为我也是在逐渐阅读文档，所以可能写过的内容会有多次修订。
+环境要求 要使用Swift必须要安装Xcode 6 Beta版，安装Xcode6不需要10.10，在10.9上就可以使用。
+代码 本文中使用道德测试代码都可以在SwiftWithCocoa这个repo中找到，大部分代码都在MyPlayground中。
+“变量”不变 第一次接触这个概念是在了解Scala的时候，Scala中有两个关键字，分别是val和var，用var声明的变量跟其他语言中的一样，可以改变值，但是val声明的变量，一旦第一次赋值之后就无法改变了，也就是所谓的“变量”不变。这种类型主要应用在多线程的场景中，可以有效的避免资源抢占，死锁等情况的发生，从语言级保证了代码的稳定性和执行效率。
+Swift也提供了类似的声明方法，分别是let和var，用let声明的是常量，用var声明的是变量。
+基本数据类型 Tuple Tuple应该是我从python、ruby转到OC之后感觉最需要的类型。Tuple最大的贡献在于能轻便的创建一些临时对象，并在不同的领域使用。比如函数返回的时候可以利用tuple便捷的返回多个值，这是现在很多流行语言都支持的。
+// Returning from func func response() -&gt; (Int, String) { return (404, &quot;Not Found&quot;) } var code: Int, description: String (code, description) = response() // code == 404 // description == &quot;Not Found&quot;  我记得我最开始学python，交换变量的方法真是让我震惊了，Swift里面（因为支持了tuple，所以）也有类似的方法了：
+// Swapping vars var first = 1 var second = 2 // Change 2 to &quot;ASDF&quot; and see the error (first, second) = (second, first) // first == 2 // second == 1  需要注意的是，因为Swift强调的是类型安全，所以上面例子中的first和second必须要是同样的类型才能交换，如果类型不同需要进行显式的类型转换，下面会进行讨论。
+	</div>
+	<div class="list__footer clearfix">
+		<a class="list__footer-readmore btn" href="/posts/2014-06-04-learning-swift-1/">Read more…</a>
+	</div>
+</article><article class="list__item post">
 	<header class="list__header">
 		<h3 class="list__title post__title ">
 			<a href="/posts/2014-05-31-pain-in-the-ass-node-webkit-with-sqlite3/" rel="bookmark">
@@ -264,11 +299,11 @@ Architecture Overview There are two major parts in this project. To deliver NSUs
 	<h4 class="widget__title">Recent Posts</h4>
 	<div class="widget__content">
 		<ul class="widget__list">
+			<li class="widget__item"><a class="widget__link" href="/posts/2019-07-01-blog-with-hugo/">使用hugo搭建个人blog</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/2017-10-03-http-status-405vs501/">HTTP状态码——405 vs 501</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/2016-06-09-stroke-animation-in-action/">实战stroke动画</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/2016-02-27-thoughts-on-functional-programming/">函数式编程随想（一）——函数式编程的好处及柯里化的意义</a></li>
 			<li class="widget__item"><a class="widget__link" href="/posts/2014-12-09-publish-to-app-store-without-access-to-developer-account/">帮他人提交Mac应用</a></li>
-			<li class="widget__item"><a class="widget__link" href="/posts/2014-07-21-stand-programming/">开始站立式编程</a></li>
 		</ul>
 	</div>
 </div>
@@ -311,6 +346,14 @@ Architecture Overview There are two major parts in this project. To deliver NSUs
 			<li class="widget__item"><a class="widget__link" href="/categories/timetable">Timetable</a></li>
 			<li class="widget__item"><a class="widget__link" href="/categories/%e5%8a%a8%e7%94%bb">动画</a></li>
 		</ul>
+	</div>
+</div>
+<div class="widget-taglist widget">
+	<h4 class="widget__title">Tags</h4>
+	<div class="widget__content">
+		<a class="widget-taglist__link widget__link btn" href="/tags/blog" title="Blog">Blog</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/hugo" title="Hugo">Hugo</a>
+		<a class="widget-taglist__link widget__link btn" href="/tags/travis" title="Travis">Travis</a>
 	</div>
 </div>
 </aside>
