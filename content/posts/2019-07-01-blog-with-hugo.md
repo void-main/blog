@@ -68,7 +68,7 @@ hugo解决问题的方法也基本是目前的标准方法，就是**模板填�
 
 当blogger写完了一篇blog，就可以委托hugo帮他生成新的静态内容，hugo会使用blogger设置的模板加上blog的内容，通过**模板引擎**把占位符替换成实际blog的内容，并生成静态页面，这样一个流程就完成了，具体流程可以参考下图。
 
-![Hugo流程]()
+![Hugo流程](/assets/blog-with-hugo/Hugo_Core.png)
 
 作为使用者，我们需要关心这几点：
 
